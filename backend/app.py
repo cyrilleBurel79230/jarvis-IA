@@ -5,9 +5,14 @@ from gtts import gTTS
 import os
 from pydub import AudioSegment
 import io
+from transformers import pipeline
+from huggingface_hub import login
 
 app = Flask(__name__)
 CORS(app)
+
+# Connectez-vous avec votre token
+login(token="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")
 
 def preprocess_audio(audio_file):
     # Charger l'audio avec pydub
@@ -29,13 +34,16 @@ def speech_to_text():
         print("Received request for /speech-to-text")
         if 'audio' not in request.files:
             print("No audio file provided")
-            return jsonify({'error':'No audio file provided'}),400
-        
+            return jsonify({'error': 'No audio file provided'}), 400
+
         audio_file = request.files['audio']
         print(f"Received audio file: {audio_file.filename}")
 
+        # Pré-traiter l'audio
+        processed_audio = preprocess_audio(audio_file)
+
         recognizer = sr.Recognizer()
-        with sr.AudioFile(audio_file) as source:
+        with sr.AudioFile(processed_audio) as source:
             print("Reading audio file")
             audio_data = recognizer.record(source)
             print("Recognizing speech")
@@ -48,10 +56,11 @@ def speech_to_text():
             except sr.RequestError as e:
                 print(f"Could not request results from Google Speech Recognition service; {e}")
                 return jsonify({'error': f'Could not request results from Google Speech Recognition service; {e}'}), 500
-            return jsonify({'text': text})
+
+        return jsonify({'text': text})
     except Exception as e:
         print(f"Error: {str(e)}")
-        return jsonify({'error':str(e)}),500
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/text-to-speech', methods=['POST'])
 def text_to_speech():
@@ -68,6 +77,30 @@ def text_to_speech():
         tts.save("static/output.mp3")
         print("Saved audio file as output.mp3")
         return jsonify({'audio_url': '/static/output.mp3'})
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/generate-text', methods=['POST'])
+def generate_text():
+    try:
+        print("Received request for /generate-text")
+        data = request.json
+        if 'prompt' not in data:
+            print("No prompt provided")
+            return jsonify({'error': 'No prompt provided'}), 400
+
+        prompt = data['prompt']
+        print(f"Received prompt: {prompt}")
+
+        # Utilisez un modèle public alternatif
+        nlp = pipeline("text-generation", model="distilgpt2")
+        result = nlp(prompt, max_length=50, num_return_sequences=1)
+
+        generated_text = result[0]['generated_text']
+        print(f"Generated text: {generated_text}")
+
+        return jsonify({'generated_text': generated_text})
     except Exception as e:
         print(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
