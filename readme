@@ -1,0 +1,16 @@
+commencer par install l'environnement virtuel 
+rasa-env\Scripts\activate
+
+pip install Flask
+pip install flask-cors
+pip install SpeechRecognition
+pip install gTTS
+pip install pydub
+pip install numpy==1.24.3
+pip install rasa==3.6.21
+
+Angular @17
+
+
+token de HUGGINGFACE pour le model mistral: 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
+
