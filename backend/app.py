@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import speech_recognition as sr
-from gtts import gTTS
+from vosk import Model, KaldiRecognizer
+import pyaudio
+import wave
 import os
-from pydub import AudioSegment
 import io
+from pydub import AudioSegment
 from transformers import pipeline
 from huggingface_hub import login
 
@@ -13,20 +14,32 @@ CORS(app)
 
 # Connectez-vous avec votre token
 login(token="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")
+model_path = "C:/Users/cyril/OneDrive/Documents/Projet_assistants_IA/jarvis-IA/backend/vosk-model-fr-0.22"  # Remplacez par le chemin absolu vers votre modèle Vosk
+# Charger le modèle Vosk
+
+if not os.path.exists(model_path):
+    raise RuntimeError(f"Le modèle Vosk n'existe pas à l'emplacement spécifié: {model_path}")
+
+model = Model(model_path)
+
+
 
 def preprocess_audio(audio_file):
-    # Charger l'audio avec pydub
-    audio = AudioSegment.from_file(audio_file)
+    try:
+        # Charger l'audio avec pydub
+        audio = AudioSegment.from_file(audio_file)
 
-    # Réduire le bruit (vous pouvez ajuster les paramètres selon vos besoins)
-    audio = audio.low_pass_filter(3000)  # Filtre passe-bas
-    audio = audio.high_pass_filter(200)  # Filtre passe-haut
+        # Convertir l'audio en mono, 16 bits, 16000 Hz
+        audio = audio.set_channels(1).set_frame_rate(16000).set_sample_width(2)
 
-    # Exporter l'audio traité en format WAV
-    buffer = io.BytesIO()
-    audio.export(buffer, format="wav")
-    buffer.seek(0)
-    return buffer
+        # Exporter l'audio traité en format WAV
+        buffer = io.BytesIO()
+        audio.export(buffer, format="wav")
+        buffer.seek(0)
+        return buffer
+    except Exception as e:
+        print(f"Error in preprocess_audio: {str(e)}")
+        raise
 
 @app.route('/speech-to-text', methods=['POST'])
 def speech_to_text():
@@ -42,43 +55,59 @@ def speech_to_text():
         # Pré-traiter l'audio
         processed_audio = preprocess_audio(audio_file)
 
-        recognizer = sr.Recognizer()
-        with sr.AudioFile(processed_audio) as source:
-            print("Reading audio file")
-            audio_data = recognizer.record(source)
-            print("Recognizing speech")
-            try:
-                text = recognizer.recognize_google(audio_data)
-                print(f"Recognized text: {text}")
-            except sr.UnknownValueError:
-                print("Google Speech Recognition could not understand the audio")
-                return jsonify({'error': 'Google Speech Recognition could not understand the audio'}), 500
-            except sr.RequestError as e:
-                print(f"Could not request results from Google Speech Recognition service; {e}")
-                return jsonify({'error': f'Could not request results from Google Speech Recognition service; {e}'}), 500
+        # Utiliser Vosk pour la reconnaissance vocale
+        wf = wave.open(processed_audio, "rb")
+        if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getframerate() != 16000:
+            raise ValueError("Le fichier audio doit être mono, 16 bits, et avoir un taux d'échantillonnage de 16000 Hz")
 
+        rec = KaldiRecognizer(model, wf.getframerate())
+        rec.SetWords(True)
+
+        text = ""
+        while True:
+            data = wf.readframes(4000)
+            if len(data) == 0:
+                break
+            if rec.AcceptWaveform(data):
+                result = rec.Result()
+                text += result['text']
+
+        final_result = rec.FinalResult()
+        text += final_result['text']
+
+        print(f"Recognized text: {text}")
         return jsonify({'text': text})
     except Exception as e:
-        print(f"Error: {str(e)}")
+        print(f"Error in speech_to_text: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/text-to-speech', methods=['POST'])
-def text_to_speech():
+@app.route('/real-time-speech-to-text', methods=['POST'])
+def real_time_speech_to_text():
     try:
-        print("Received request for /text-to-speech")
-        data = request.json
-        if 'text' not in data:
-            print("No text provided")
-            return jsonify({'error': 'No text provided'}), 400
+        print("Received request for /real-time-speech-to-text")
 
-        text = data['text']
-        print(f"Received text: {text}")
-        tts = gTTS(text=text, lang='fr')
-        tts.save("static/output.mp3")
-        print("Saved audio file as output.mp3")
-        return jsonify({'audio_url': '/static/output.mp3'})
+        # Initialiser PyAudio
+        p = pyaudio.PyAudio()
+        stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
+        stream.start_stream()
+
+        rec = KaldiRecognizer(model, 16000)
+        rec.SetWords(True)
+
+        text = ""
+        while True:
+            data = stream.read(4000)
+            if rec.AcceptWaveform(data):
+                result = rec.Result()
+                text += result['text']
+
+        final_result = rec.FinalResult()
+        text += final_result['text']
+
+        print(f"Recognized text: {text}")
+        return jsonify({'text': text})
     except Exception as e:
-        print(f"Error: {str(e)}")
+        print(f"Error in real_time_speech_to_text: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/generate-text', methods=['POST'])
@@ -93,8 +122,8 @@ def generate_text():
         prompt = data['prompt']
         print(f"Received prompt: {prompt}")
 
-        # Utilisez un modèle public alternatif
-        nlp = pipeline("text-generation", model="distilgpt2")
+        # Utilisez le modèle Mistral pour la génération de texte
+        nlp = pipeline("text-generation", model="mistralai/Mistral-7B-v0.1")
         result = nlp(prompt, max_length=50, num_return_sequences=1)
 
         generated_text = result[0]['generated_text']
@@ -102,8 +131,12 @@ def generate_text():
 
         return jsonify({'generated_text': generated_text})
     except Exception as e:
-        print(f"Error: {str(e)}")
+        print(f"Error in generate_text: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+@app.route('/')
+def home():
+    return "Welcome to the Jarvis AI Assistant API!"
 
 if __name__ == '__main__':
     app.run(debug=True)

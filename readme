@@ -11,6 +11,9 @@ pip install rasa==3.6.21
 
 Angular @17
 
+VOSK vosk-model-fr-0.22  pour la reconnaissance vocale
+PyAudio pour capturer l'audio en temps réel 
+
 
 token de HUGGINGFACE pour le model mistral: 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
 

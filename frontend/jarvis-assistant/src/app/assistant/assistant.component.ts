@@ -1,13 +1,15 @@
-import { Component, ViewChild, ElementRef ,AfterViewInit} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-assistant',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule],
   templateUrl: './assistant.component.html',
-  styleUrls: ['./assistant.component.scss']
+  styleUrls: ['./assistant.component.scss'],
+  providers: [ApiService]
 })
 export class AssistantComponent implements AfterViewInit {
   @ViewChild('audioPlayback', { static: false }) audioPlayback!: ElementRef<HTMLAudioElement>;
@@ -15,9 +17,9 @@ export class AssistantComponent implements AfterViewInit {
   private mediaRecorder!: MediaRecorder;
   private audioChunks: Blob[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
-    ngAfterViewInit() {
+  ngAfterViewInit() {
     // Initialisation après que la vue soit prête
   }
 
@@ -32,26 +34,23 @@ export class AssistantComponent implements AfterViewInit {
 
       this.mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-        const formData = new FormData();
-        formData.append('audio', audioBlob, 'recording.wav');
 
-        const response = await this.http.post<{ text: string }>('http://localhost:5000/speech-to-text', formData).toPromise();
-        const text = response?.text;
+        try {
+          const response = await this.apiService.speechToText(audioBlob).toPromise();
+          const text = response?.text;
 
-
-        if (text) {
-          const ttsResponse = await this.http.post<{ audio_url: string }>('http://localhost:5000/text-to-speech', { text }).toPromise();
-
-          if (ttsResponse) {
-            this.audioPlayback.nativeElement.src = ttsResponse.audio_url;
-            this.audioPlayback.nativeElement.play();
+          if (text) {
+            console.log('Recognized text:', text);
+            // Vous pouvez ajouter ici la logique pour afficher le texte reconnu dans l'interface utilisateur
           } else {
-            console.error('Text-to-speech response is undefined');
+            console.error('Speech-to-text response is undefined');
           }
-        } else {
-          console.error('Speech-to-text response is undefined');
+        } catch (error) {
+          console.error('Error processing audio:', error);
         }
       };
+    }).catch(error => {
+      console.error('Error accessing media devices:', error);
     });
   }
 
