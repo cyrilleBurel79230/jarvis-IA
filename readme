@@ -1,5 +1,11 @@
-commencer par install l'environnement virtuel 
-rasa-env\Scripts\activate
+commencer par install l'environnement virtuel :
+python -m venv venv
+.\venv\Scripts\activate
+
+pip install -r requirements.txt
+
+
+python test.py
 
 pip install Flask
 pip install flask-cors
@@ -17,3 +23,13 @@ PyAudio pour capturer l'audio en temps réel
 
 token de HUGGINGFACE pour le model mistral: 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
 
+pip-tools
+Flask
+flask-cors
+SpeechRecognition
+gTTS
+pydub
+numpy==1.24.3
+rasa==3.6.21
+tensorflow-intel==2.12.0
+vosk
