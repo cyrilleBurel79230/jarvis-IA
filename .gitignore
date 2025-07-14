@@ -131,3 +131,5 @@ vosk-model-fr-0.22/
 vosk-model-small-fr-0.22/
 ffmpeg/
 .env/
+
+readme.txt
