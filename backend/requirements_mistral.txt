@@ -1,0 +1,13 @@
+--upgrade pip
+python-dotenv
+mistralai==1.9.2
+pydantic==2.11.7
+pyaudio
+vosk
+pyttsx3
+torch
+-U elevenlabs
+numpy
+playsound@git+https://github.com/taconi/playsound
+opencv-python easyocr numpy
+

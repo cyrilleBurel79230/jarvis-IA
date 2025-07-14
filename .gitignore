@@ -90,6 +90,8 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
+# Environnement virtuel
+mistral-env/
 .env
 .venv
 env/
@@ -123,8 +125,9 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Environnement virtuel
-venv/
+
 # les models
 vosk-model-fr-0.22/
+vosk-model-small-fr-0.22/
 ffmpeg/
+.env/
