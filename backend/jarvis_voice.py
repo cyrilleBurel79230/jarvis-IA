@@ -13,8 +13,8 @@ load_dotenv()
 client = ElevenLabs(api_key=os.getenv("ELEVENTLABS_API_KEY"))
 
 # 📎 ID de la voix Jarvis (ex: voix française)
-VOICE_ID = "IKne3meq5aSn9XLyUdCD"  # Remplace avec celle que tu veux
-MODEL_ID = "eleven_multilingual_v2"
+VOICE_ID = os.getenv("VOICE_ID") # Remplace avec celle que tu veux
+MODEL_ID = os.getenv("MODEL_ID")
 
 
 def clean_response(text: str) -> str:
@@ -64,29 +64,3 @@ def parler_en_jarvis(texte: str):
         jouer_phrase(texte_nettoye)
         
 
-"""
-
-   voices = client.voices.get_all()
-    for v in voices.voices:
-        print(f"{v.name} → {v.voice_id}")
-
-Aria → 9BWtsMINqrJLrRacOk9x
-Sarah → EXAVITQu4vr4xnSDxMaL
-Laura → FGY2WhTYpPnrIDTdsKH5
-Charlie → IKne3meq5aSn9XLyUdCD
-George → JBFqnCBsd6RMkjVDRZzb
-Callum → N2lVS1w4EtoT3dr4eOWO
-River → SAz9YHcvj6GT2YYXdXww
-Liam → TX3LPaxmHKxFdv7VOQHJ
-Charlotte → XB0fDUnXU5powFXDhCwa
-Alice → Xb7hH8MSUJpSbSDYk0k2
-Matilda → XrExE9yKIg1WjnnlVkGX
-Will → bIHbv24MWmeRgasZH58o
-Jessica → cgSgspJ2msm6clMCkdW9
-Eric → cjVigY5qzO86Huf0OWal
-Chris → iP95p4xoKVk53GoZ742B
-Brian → nPczCjzI2devNBz1zQrb
-Daniel → onwK4e9ZLuTAKqWW03F9
-Lily → pFZP5JQG7iQjIQuC4Bku
-Bill → pqHfZKP75CvOlQylNhV4
-"""
