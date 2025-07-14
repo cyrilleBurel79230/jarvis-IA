@@ -2,7 +2,8 @@
 from jarvis_voice import parler_en_jarvis
 from jarvis_scan import scanner_bouteille
 from jarvis_wine import ajouter_bouteille_depuis_scan, ajouter_bouteille_en_base
-
+from jarvis_wine import interpreter_ajout_vocal  # à importer en haut
+from jarvis_utils import detecte_commande
 
 from mistralai import Mistral
 from dotenv import load_dotenv
@@ -12,6 +13,8 @@ import pyttsx3
 import json
 import wave
 import pyaudio
+import cv2
+
 
 load_dotenv()
 client_mistral = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
@@ -32,6 +35,7 @@ engine.setProperty('rate', 160)
 if os.name == 'posix':
     engine.setProperty('voice', 'com.apple.speech.synthesis.voice.thomas')
 
+mode_concise = True  # Active au démarrage
 
 
 # === 🎤 Enregistrement audio ===
@@ -78,7 +82,11 @@ def recognize(filename):
         text += final_result.get("text", "")
         return text.strip()
 
-def jarvis_repond(prompt: str):
+def jarvis_repond(prompt: str, mode_concise=False):
+    if mode_concise:
+        prompt = f"Réponds de façon brève, directe, sans suggestions : {prompt}"
+
+    
     response = client_mistral.chat.complete(
         model="mistral-small-latest",
         messages=[{"role": "user", "content": prompt}]
@@ -91,6 +99,7 @@ def jarvis_repond(prompt: str):
 def gestion_scan_bouteille():
     texte_ocr = scanner_bouteille()
     if not texte_ocr:
+        print("Pas de text OCR de scanné")
         return
 
     data_bouteille = ajouter_bouteille_depuis_scan(texte_ocr)
@@ -118,7 +127,19 @@ def gestion_scan_bouteille():
 
 # === 🔁 Boucle principale ===
 if __name__ == "__main__":
-    while True:
+   """
+    #Test de capture video 
+    cap = cv2.VideoCapture(0)
+    ret, frame = cap.read()
+    print("Fonctionne ?", ret)
+    cap.release()
+
+    gestion_scan_bouteille()  # test direct
+    """
+   interruption_active = False  # 🛑 Interruption désactivée par défaut
+      
+while True:
+       
         input("🟢 Appuie sur Entrée pour parler à Jarvis (ou Ctrl+C pour quitter)...")
         file = record_audio(duration=5)
         recognized = recognize(file)
@@ -128,8 +149,44 @@ if __name__ == "__main__":
             continue
 
         print(f"🗣️ Tu as dit : {recognized}")
-        response = jarvis_repond(recognized)
-    #    speak(response)
+ 
+        # 📷 Commande de scan
+        commande = detecte_commande(recognized)
+        print(f"🔍 Commande détectée : {commande}")
+        if commande == "stop":
+                interruption_active = True
+                print("⛔ Interruption activée")
+                parler_en_jarvis("D'accord, j'arrête la réponse.")
+                continue
 
+        if interruption_active:
+                print("🤐 Mode silencieux actif — Jarvis ne répondra pas.")
+                continue
+
+        if commande == "ajout d'une bouteille":
+            print("📸 Scanner lancé")
+            gestion_scan_bouteille()
+            continue
+        elif commande == "liste":
+            print("📦 Affichage de la cave")
+            lister_bouteilles()
+            continue
+
+        elif commande == "retirer":
+            print("🗑️ Retrait (fonction à implémenter)")
+            # Tu peux appeler une fonction comme retirer_bouteille_vocalement(recognized)
+            continue
+        else:
+            # 🧠 Réponse générale de Jarvis
+            prompt = f"Réponds brièvement : {recognized}" if mode_concise else recognized
+            jarvis_repond(prompt,True)
+            continue
+
+       
+
+
+        
+    
+        
 
 

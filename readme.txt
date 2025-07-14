@@ -6,9 +6,11 @@ python -m venv venv
 python -m venv rasa-env
 pip install rasa==3.6.21 pydantic==1.10.9
 
+
 # Pour Mistral
 python -m venv mistral-env
 .\mistral-env\Scripts\activate
+
 python -m pip install mistralai==1.9.2
 python -m pip install pydantic==2.11.7
 

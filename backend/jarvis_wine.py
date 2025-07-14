@@ -3,23 +3,23 @@ from jarvis_voice import parler_en_jarvis
 import json
 from datetime import date
 from datetime import datetime, timedelta
+import os
 
-
-DB_PATH = "cave_vin.json"
+DB_PATH = "./cave_vin.json"
 
 def ajouter_bouteille_en_base(data):
-    try:
-        with open(DB_PATH, "r", encoding="utf-8") as f:
-            cave = json.load(f)
-    except FileNotFoundError:
-        cave = []
+    cave = charger_cave()
 
-    # 🗓️ Ajout automatique de la date
+    # 🗓️ Ajouter la date d’entrée
     data["ajoutée_le"] = date.today().isoformat()
+
     cave.append(data)
 
     with open(DB_PATH, "w", encoding="utf-8") as f:
         json.dump(cave, f, indent=4, ensure_ascii=False)
+
+    print(f"✅ Bouteille '{data['nom']} {data['année']}' ajoutée avec succès.")
+
 
 
 def ajouter_bouteille_depuis_scan(texte_brut):
@@ -39,6 +39,7 @@ def ajouter_bouteille_depuis_scan(texte_brut):
     phrase = f"Bouteille détectée : {nom}, année {annee}, type {type_vin}. Souhaitez-vous l'ajouter à votre cave ?"
     parler_en_jarvis(phrase)
 
+   
     # 📦 Retour des données pour ajout manuel ou en base
     return {
         "nom": nom,
@@ -117,3 +118,35 @@ def bouteilles_proches_expiration(seuil_jours=30):
 
     if not found:
         print("✅ Aucune bouteille proche de sa date limite.")
+
+def charger_cave():
+    if not os.path.exists(DB_PATH) or os.path.getsize(DB_PATH) == 0:
+        # 🔧 Fichier inexistant ou vide → on initialise
+        with open(DB_PATH, "w", encoding="utf-8") as f:
+            json.dump([], f, indent=4)
+        return []
+
+    with open(DB_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def interpreter_ajout_vocal(text: str):
+    # 🔍 Extraction de l’année
+    match_annee = re.search(r'\b(19|20)\d{2}\b', text)
+    annee = match_annee.group() if match_annee else "inconnue"
+
+    # 🔍 Détection du type
+    match_type = re.search(r'(Bordeaux|Bourgogne|Champagne|Côtes-du-Rhône|Alsace|Chablis)', text, re.IGNORECASE)
+    type_vin = match_type.group().title() if match_type else "Non identifié"
+
+    # 🔤 Nom de bouteille (le reste après “Ajoute” ou “Ajoute le”)
+    nom_match = re.search(r"(?:ajoute(?:r)?(?: le| la| un| une)? )(.+?)(?: \d{4}|$)", text, re.IGNORECASE)
+    nom = nom_match.group(1).strip() if nom_match else "Nom inconnu"
+
+    data = {
+        "nom": nom,
+        "année": annee,
+        "type": type_vin
+    }
+
+    parler_en_jarvis(f"Ajout de la bouteille : {nom}, année {annee}, type {type_vin}.")
+    ajouter_bouteille_en_base(data)
