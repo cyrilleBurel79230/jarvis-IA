@@ -1,0 +1,379 @@
+[
+    {
+        "region": "Bordeaux",
+        "sous_regions": [
+            {
+                "nom": "Médoc",
+                "domaines": [
+                    {
+                        "nom": "Château Lafite Rothschild",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Latour",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Margaux",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Mouton Rothschild",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Haut-Brion",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Brane-Cantenac",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Cos d’Estournel",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Ducru-Beaucaillou",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Palmer",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Pichon Longueville",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Pontet-Canet",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Talbot",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Calon-Ségur",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Lynch-Bages",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Saint-Émilion (Libournais)",
+                "domaines": [
+                    {
+                        "nom": "Château Ausone",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Angelus",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Cheval Blanc",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Pavie",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Figeac",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Troplong Mondot",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Sauternes - Barsac",
+                "domaines": [
+                    {
+                        "nom": "Château Guiraud",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Nairac",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "region": "Bourgogne",
+        "sous_regions": [
+            {
+                "nom": "Chablisien",
+                "domaines": [
+                    {
+                        "nom": "Domaine de la Tour",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Marini",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Famille Duc",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Côte de Nuits",
+                "domaines": [
+                    {
+                        "nom": "Domaine Faiveley",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château de Marsannay",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Clos de Vougeot",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Chambertin",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Musigny",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Côte de Beaune",
+                "domaines": [
+                    {
+                        "nom": "Château de Pommard",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Leflaive",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château de Meursault",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Jean-Marc Roulot",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Comtes Lafon",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Côte Chalonnaise",
+                "domaines": [
+                    {
+                        "nom": "Château Clos du Cellier aux Moines",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Mâconnais",
+                "domaines": [
+                    {
+                        "nom": "Cave coopérative de Lugny",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "region": "Vallée du Rhône",
+        "sous_regions": [
+            {
+                "nom": "Châteauneuf-du-Pape",
+                "domaines": [
+                    {
+                        "nom": "Château de Beaucastel",
+                        "adresse": "730 Chemin de Beaucastel, 84350 Courthézon",
+                        "telephone": "+33 4 90 70 41 00",
+                        "cepages": [
+                            "Grenache (30%)",
+                            "Mourvèdre (30%)",
+                            "Syrah (10%)",
+                            "Counoise (10%)",
+                            "Cinsault (5%)",
+                            "Vaccarèse",
+                            "Terret Noir",
+                            "Muscardin",
+                            "Clairette",
+                            "Picpoul",
+                            "Picardan",
+                            "Bourboulenc",
+                            "Roussanne"
+                        ]
+                    },
+                    {
+                        "nom": "Château La Nerthe",
+                        "adresse": "Châteauneuf-du-Pape, Vaucluse",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache",
+                            "Mourvèdre",
+                            "Syrah",
+                            "Roussanne",
+                            "Clairette",
+                            "Bourboulenc"
+                        ]
+                    },
+                    {
+                        "nom": "Domaine Les Cailloux",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Maison Ogier (Clos de l’Oratoire)",
+                        "adresse": "Courthézon (Châteauneuf-du-Pape)",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache noir",
+                            "Mourvèdre",
+                            "Cinsault",
+                            "Syrah",
+                            "Roussanne",
+                            "Clairette",
+                            "Bourboulenc",
+                            "Grenache blanc",
+                            "Picardan"
+                        ]
+                    },
+                    {
+                        "nom": "Château de l’Hers",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "Syrah",
+                            "Cinsaut",
+                            "Muscardin",
+                            "Counoise",
+                            "Clairette",
+                            "Bourboulenc",
+                            "Roussanne",
+                            "Picpoul",
+                            "Picardan",
+                            "Terret Noir",
+                            "Vaccarèse"
+                        ]
+                    },
+                    {
+                        "nom": "Château Rayas",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache"
+                        ]
+                    },
+                    {
+                        "nom": "Domaine Saint Préfert",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Les Semelles de Vent",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "100% Mourvèdre"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

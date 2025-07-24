@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  jarvis-ia:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jarvis-ia
+    volumes:
+      - ./backend:/app/backend
+    environment:
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      - HF_TOKEN=${HF_TOKEN}
+    command: python backend/jarvis_terminal.py
+    restart: unless-stopped
+
+  jarvis-voice:
+    build:
+      context: .
+      dockerfile: Dockerfile.voice
+    container_name: jarvis-voice
+    volumes:
+      - ./backend:/app/backend
+    environment:
+      - ELEVENTLABS_API_KEY=${ELEVENTLABS_API_KEY}
+    command: python backend/jarvis_voice.py
+    restart: unless-stopped
+
+  jarvis-ocr:
+    build:
+      context: .
+      dockerfile: Dockerfile.ocr
+    container_name: jarvis-ocr
+    volumes:
+      - ./backend:/app/backend
+    environment:
+      - MODEL_ID=${MODEL_ID}
+      - VOICE_ID=${VOICE_ID}
+    command: python backend/jarvis_scan.py
+    restart: unless-stopped

@@ -62,9 +62,9 @@ def jouer_phrase(phrase):
 
 # 🤖 Fonction principale
 # 🧠 Lecture adaptative
-def parler_en_jarvis(texte: str):
+def parler_en_jarvis(texte: str, interruption_active=False):
 
-    from jarvis_terminal import interruption_active  # ⚠️ import croisé
+   
     if interruption_active:
         print("🧠 Interruption active : Jarvis ne parlera pas.")
         return

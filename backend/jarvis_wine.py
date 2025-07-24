@@ -37,7 +37,7 @@ def ajouter_bouteille_depuis_scan(texte_brut):
 
     # 💬 Confirmation vocale via Jarvis
     phrase = f"Bouteille détectée : {nom}, année {annee}, type {type_vin}. Souhaitez-vous l'ajouter à votre cave ?"
-    parler_en_jarvis(phrase)
+    parler_en_jarvis(phrase,False)
 
    
     # 📦 Retour des données pour ajout manuel ou en base
@@ -148,5 +148,5 @@ def interpreter_ajout_vocal(text: str):
         "type": type_vin
     }
 
-    parler_en_jarvis(f"Ajout de la bouteille : {nom}, année {annee}, type {type_vin}.")
+    parler_en_jarvis(f"Ajout de la bouteille : {nom}, année {annee}, type {type_vin}.",False)
     ajouter_bouteille_en_base(data)

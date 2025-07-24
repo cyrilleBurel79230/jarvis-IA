@@ -59,3 +59,5 @@ curl -X POST https://api-inference.huggingface.co/models/gpt2 \
      -H "Authorization: Bearer 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" \
      -H "Content-Type: application/json" \
      -d '{"inputs": "Explique-moi la bourse en français.", "parameters": {"max_new_tokens": 100, "temperature": 0.7}}'
+Docker :
+Lancer Docker desktop du pc puis lancer la comande docker build -t jarvis-ia .

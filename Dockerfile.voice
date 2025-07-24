@@ -1,0 +1,33 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# 📂 Copier ton code
+COPY backend/ ./backend/
+COPY requirements-voice.txt ./
+
+# 🛠️ Installer les dépendances système
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libasound-dev \
+    portaudio19-dev \
+    libportaudio2 \
+    libportaudiocpp0 \
+    espeak \
+    ffmpeg \
+    libffi-dev \
+    unzip \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# 📦 Installer les dépendances Python
+RUN pip install --upgrade pip \
+    && pip install -r requirements-voice.txt
+
+# 📥 Télécharger et décompresser le modèle VOSK FR
+RUN mkdir -p backend/vosk_model \
+    && wget -O vosk-model-small-fr-0.22.zip https://archive.org/download/vosk-models-small/vosk-model-small-fr-0.22.zip \
+    && unzip vosk-model-small-fr-0.22.zip -d backend/vosk_model \
+    && rm vosk-model-small-fr-0.22.zip
+
+CMD ["python", "backend/jarvis_voice.py"]

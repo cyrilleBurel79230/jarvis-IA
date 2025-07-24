@@ -1,0 +1,194 @@
+[
+    {
+        "region": "Bordeaux",
+        "sous_regions": [
+            {
+                "nom": "Médoc",
+                "domaines": [
+                    "Château Lafite Rothschild",
+                    "Château Latour",
+                    "Château Margaux",
+                    "Château Mouton Rothschild",
+                    "Château Haut-Brion",
+                    "Château Brane-Cantenac",
+                    "Château Cos d’Estournel",
+                    "Château Ducru-Beaucaillou",
+                    "Château Palmer",
+                    "Château Pichon Longueville",
+                    "Château Pontet-Canet",
+                    "Château Talbot",
+                    "Château Calon-Ségur",
+                    "Château Lynch-Bages"
+                ]
+            },
+            {
+                "nom": "Saint-Émilion (Libournais)",
+                "domaines": [
+                    "Château Ausone",
+                    "Château Angelus",
+                    "Château Cheval Blanc",
+                    "Château Pavie",
+                    "Château Figeac",
+                    "Château Troplong Mondot"
+                ]
+            },
+            {
+                "nom": "Sauternes - Barsac",
+                "domaines": [
+                    "Château Guiraud",
+                    "Château Nairac"
+                ]
+            }
+        ]
+    },
+    {
+        "region": "Bourgogne",
+        "sous_regions": [
+            {
+                "nom": "Chablisien",
+                "domaines": [
+                    "Domaine de la Tour",
+                    "Domaine Marini",
+                    "Domaine Famille Duc"
+                ]
+            },
+            {
+                "nom": "Côte de Nuits",
+                "domaines": [
+                    "Domaine Faiveley",
+                    "Château de Marsannay",
+                    "Clos de Vougeot",
+                    "Chambertin",
+                    "Musigny"
+                ]
+            },
+            {
+                "nom": "Côte de Beaune",
+                "domaines": [
+                    "Château de Pommard",
+                    "Domaine Leflaive",
+                    "Château de Meursault",
+                    "Domaine Jean-Marc Roulot",
+                    "Comtes Lafon"
+                ]
+            },
+            {
+                "nom": "Côte Chalonnaise",
+                "domaines": [
+                    "Château Clos du Cellier aux Moines"
+                ]
+            },
+            {
+                "nom": "Mâconnais",
+                "domaines": [
+                    "Cave coopérative de Lugny"
+                ]
+            }
+        ]
+    },
+    {
+        "region": "Vallée du Rhône",
+        "sous_regions": [
+            {
+                "nom": "Châteauneuf-du-Pape",
+                "domaines": [
+                    {
+                        "nom": "Château de Beaucastel",
+                        "adresse": "730 Chemin de Beaucastel, 84350 Courthézon",
+                        "telephone": "+33 4 90 70 41 00",
+                        "cepages": [
+                            "Grenache (30%)",
+                            "Mourvèdre (30%)",
+                            "Syrah (10%)",
+                            "Counoise (10%)",
+                            "Cinsault (5%)",
+                            "Vaccarèse",
+                            "Terret Noir",
+                            "Muscardin",
+                            "Clairette",
+                            "Picpoul",
+                            "Picardan",
+                            "Bourboulenc",
+                            "Roussanne"
+                        ]
+                    },
+                    {
+                        "nom": "Château La Nerthe",
+                        "adresse": "Châteauneuf-du-Pape, Vaucluse",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache",
+                            "Mourvèdre",
+                            "Syrah",
+                            "Roussanne",
+                            "Clairette",
+                            "Bourboulenc"
+                        ]
+                    },
+                    {
+                        "nom": "Domaine Les Cailloux",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Maison Ogier (Clos de l’Oratoire)",
+                        "adresse": "Courthézon (Châteauneuf-du-Pape)",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache noir",
+                            "Mourvèdre",
+                            "Cinsault",
+                            "Syrah",
+                            "Roussanne",
+                            "Clairette",
+                            "Bourboulenc",
+                            "Grenache blanc",
+                            "Picardan"
+                        ]
+                    },
+                    {
+                        "nom": "Château de l’Hers",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "Syrah",
+                            "Cinsaut",
+                            "Muscardin",
+                            "Counoise",
+                            "Clairette",
+                            "Bourboulenc",
+                            "Roussanne",
+                            "Picpoul",
+                            "Picardan",
+                            "Terret Noir",
+                            "Vaccarèse"
+                        ]
+                    },
+                    {
+                        "nom": "Château Rayas",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache"
+                        ]
+                    },
+                    {
+                        "nom": "Domaine Saint Préfert",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Les Semelles de Vent",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "100% Mourvèdre"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

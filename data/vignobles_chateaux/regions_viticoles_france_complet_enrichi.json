@@ -1,0 +1,343 @@
+[
+    {
+        "region": "Bordeaux",
+        "sous_regions": [
+            {
+                {
+				  "nom": "Médoc",
+				  "domaines": [
+						{
+						  "nom": "Château Lestage Simon",
+					  "adresse": "19 Route de Pauillac, 33460 Saint-Seurin-de-Cadourne, France",
+					  "telephone": "+33 5 56 59 51 94",
+					  "site_web": "https://www.lestagesimon.fr",
+					  "cépages": ["Merlot", "Cabernet Sauvignon", "Petit Verdot"],
+					  "description": "Cru Bourgeois traditionnel situé sur une croupe graveleuse entre estuaire et océan.",
+					  "appellation": "Haut-Médoc AOC"
+					},
+					{
+					  "nom": "Château Tour Castillon",
+					  "adresse": "12 Rue du Château, 33340 Saint-Christoly-Médoc, France",
+					  "telephone": "+33 5 56 59 58 01",
+					  "site_web": "https://www.tourcastillon.fr",
+					  "cépages": ["Cabernet Sauvignon", "Merlot"],
+					  "description": "Petit domaine avec chai à flanc d'estuaire, orienté vers des vinifications douces.",
+					  "appellation": "Médoc AOC"
+					},
+					{
+					  "nom": "Château du Taillan",
+					  "adresse": "56 Avenue de la Boétie, 33320 Le Taillan-Médoc, France",
+					  "telephone": "+33 5 56 57 47 00",
+					  "site_web": "https://www.chateaudutaillan.com",
+					  "cépages": ["Cabernet Sauvignon", "Merlot", "Cabernet Franc"],
+					  "description": "Château familial classé monument historique, très actif en œnotourisme.",
+					  "appellation": "Haut-Médoc AOC"
+					},
+					{
+					  "nom": "Château Saint-Aubin",
+					  "adresse": "1 Route de Lesparre, 33480 Saint-Aubin-de-Médoc, France",
+					  "telephone": "+33 5 56 70 47 78",
+					  "site_web": "https://www.chateausaintaubin.fr",
+					  "cépages": ["Merlot", "Cabernet Sauvignon"],
+					  "description": "Domaine discret de 17 hectares produisant des vins frais et équilibrés.",
+					  "appellation": "Médoc AOC"
+					},
+					{
+					  "nom": "Château Puy Castéra",
+					  "adresse": "Chemin du Château, 33250 Cissac-Médoc, France",
+					  "telephone": "+33 5 56 59 58 92",
+					  "site_web": "https://www.chateaupuycastera.com",
+					  "cépages": ["Cabernet Sauvignon", "Merlot"],
+					  "description": "Château datant du XIVe siècle, perché sur les hauteurs avec vues imprenables.",
+					  "appellation": "Haut-Médoc AOC"
+					}
+					// 👉 20 autres domaines confidentiels à venir dans les blocs suivants
+				  ]
+				}
+			},
+			{
+                "nom": "Saint-Émilion (Libournais)",
+                "domaines": [
+                    {
+                        "nom": "Château Ausone",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Angelus",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Cheval Blanc",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Pavie",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Figeac",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Troplong Mondot",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Sauternes - Barsac",
+                "domaines": [
+                    {
+                        "nom": "Château Guiraud",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château Nairac",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "region": "Bourgogne",
+        "sous_regions": [
+            {
+                "nom": "Chablisien",
+                "domaines": [
+                    {
+                        "nom": "Domaine de la Tour",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Marini",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Famille Duc",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Côte de Nuits",
+                "domaines": [
+                    {
+                        "nom": "Domaine Faiveley",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château de Marsannay",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Clos de Vougeot",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Chambertin",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Musigny",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Côte de Beaune",
+                "domaines": [
+                    {
+                        "nom": "Château de Pommard",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Leflaive",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Château de Meursault",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Jean-Marc Roulot",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Comtes Lafon",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Côte Chalonnaise",
+                "domaines": [
+                    {
+                        "nom": "Château Clos du Cellier aux Moines",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            },
+            {
+                "nom": "Mâconnais",
+                "domaines": [
+                    {
+                        "nom": "Cave coopérative de Lugny",
+                        "adresse": "Adresse non renseignée",
+                        "telephone": null,
+                        "cepages": null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "region": "Vallée du Rhône",
+        "sous_regions": [
+            {
+                "nom": "Châteauneuf-du-Pape",
+                "domaines": [
+                    {
+                        "nom": "Château de Beaucastel",
+                        "adresse": "730 Chemin de Beaucastel, 84350 Courthézon",
+                        "telephone": "+33 4 90 70 41 00",
+                        "cepages": [
+                            "Grenache (30%)",
+                            "Mourvèdre (30%)",
+                            "Syrah (10%)",
+                            "Counoise (10%)",
+                            "Cinsault (5%)",
+                            "Vaccarèse",
+                            "Terret Noir",
+                            "Muscardin",
+                            "Clairette",
+                            "Picpoul",
+                            "Picardan",
+                            "Bourboulenc",
+                            "Roussanne"
+                        ]
+                    },
+                    {
+                        "nom": "Château La Nerthe",
+                        "adresse": "Châteauneuf-du-Pape, Vaucluse",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache",
+                            "Mourvèdre",
+                            "Syrah",
+                            "Roussanne",
+                            "Clairette",
+                            "Bourboulenc"
+                        ]
+                    },
+                    {
+                        "nom": "Domaine Les Cailloux",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Maison Ogier (Clos de l’Oratoire)",
+                        "adresse": "Courthézon (Châteauneuf-du-Pape)",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache noir",
+                            "Mourvèdre",
+                            "Cinsault",
+                            "Syrah",
+                            "Roussanne",
+                            "Clairette",
+                            "Bourboulenc",
+                            "Grenache blanc",
+                            "Picardan"
+                        ]
+                    },
+                    {
+                        "nom": "Château de l’Hers",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "Syrah",
+                            "Cinsaut",
+                            "Muscardin",
+                            "Counoise",
+                            "Clairette",
+                            "Bourboulenc",
+                            "Roussanne",
+                            "Picpoul",
+                            "Picardan",
+                            "Terret Noir",
+                            "Vaccarèse"
+                        ]
+                    },
+                    {
+                        "nom": "Château Rayas",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "Grenache"
+                        ]
+                    },
+                    {
+                        "nom": "Domaine Saint Préfert",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": null
+                    },
+                    {
+                        "nom": "Domaine Les Semelles de Vent",
+                        "adresse": "Châteauneuf-du-Pape",
+                        "telephone": null,
+                        "cepages": [
+                            "100% Mourvèdre"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

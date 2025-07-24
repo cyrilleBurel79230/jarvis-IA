@@ -1,0 +1,7 @@
+pyaudio
+vosk
+pyttsx3
+torch
+elevenlabs==0.3.0b0
+
+

@@ -82,7 +82,7 @@ def recognize(filename):
         text += final_result.get("text", "")
         return text.strip()
 
-def jarvis_repond(prompt: str, mode_concise=False):
+def jarvis_repond(prompt: str, mode_concise=False,interruption_active=False):
     if mode_concise:
         prompt = f"Réponds de façon brève, directe, sans suggestions : {prompt}"
 
@@ -93,7 +93,7 @@ def jarvis_repond(prompt: str, mode_concise=False):
     )
     texte = response.choices[0].message.content
     print(f"🧠 Jarvis dit : {texte}")
-    parler_en_jarvis(texte)
+    parler_en_jarvis(texte,interruption_active=interruption_active)
 
 
 def gestion_scan_bouteille():
@@ -179,7 +179,7 @@ while True:
         else:
             # 🧠 Réponse générale de Jarvis
             prompt = f"Réponds brièvement : {recognized}" if mode_concise else recognized
-            jarvis_repond(prompt,True)
+            jarvis_repond(prompt,mode_concise=mode_concise, interruption_active=interruption_active)
             continue
 
        

@@ -1,0 +1,2 @@
+mistralai==1.9.2
+pydantic==2.11.7
