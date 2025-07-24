@@ -31,5 +31,12 @@ export class VoiceCommandComponent {
     console.log('Lecture vocale terminée');
 
   }
+  startVoiceNavigation(){
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.lang = 'fr-FR'; // Définir la langue à français
+    recognition.interimResults = true; // Activer les résultats intermédiaires
+    recognition.continuous = true; // Activer la reconnaissance continue
+
+  }
 
 }

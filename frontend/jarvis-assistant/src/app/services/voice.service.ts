@@ -5,24 +5,23 @@ import { Injectable } from '@angular/core';
 })
 export class VoiceService {
   private voiceJarvis: SpeechSynthesisVoice | null = null;
-  private voiceKitt: SpeechSynthesisVoice | null = null;
-
+  
   constructor() {
     // Chargement des voix disponibles
     speechSynthesis.onvoiceschanged = () => {
         const voices = speechSynthesis.getVoices();
         this.voiceJarvis = voices.find(voice => voice.name.includes('Google UK') || voice.lang === 'en-GB') ?? null;
-        this.voiceKitt = voices.find(voice => voice.name.includes('Google US') || voice.lang === 'en-US') ?? null;
+       
     } 
    }
  // 
-   speakForModule(text: string, domain: string, assistant: 'jarvis' | 'kitt' = 'jarvis'){
+   speakForModule(text: string, domain: string, assistant: 'jarvis' ){
     const utter = new SpeechSynthesisUtterance(text);
     utter.rate = assistant === 'jarvis' ? 0.9 : 1.2; // Vitesse de la voix
     utter.pitch = assistant === 'jarvis' ? 0.75 : 0.5; // Hauteur de la voix
     utter.volume = 1; // Volume de la voix
-    utter.lang = domain === 'jarvis' ? 'en-GB' : 'en-US';
-    utter.voice = domain === 'jarvis' ? this.voiceJarvis : this.voiceKitt;
+    utter.lang = 'en-GB';
+    utter.voice = this.voiceJarvis;
 
     utter.onstart = () => {
       console.log(`Speaking with ${assistant} in ${domain} domain: ${text}`);
@@ -34,7 +33,7 @@ export class VoiceService {
       console.error(`Error speaking with ${assistant} in ${domain} domain:`, event.error);
     } 
     // Vérification que les voix sont chargées avant de parler
-    if (this.voiceJarvis && this.voiceKitt) {
+    if (this.voiceJarvis) {
       speechSynthesis.speak(utter);
     } else {
       console.warn('Voices not loaded yet, retrying...');
@@ -42,7 +41,7 @@ export class VoiceService {
     }  
 
 
-    if (!this.voiceJarvis || !this.voiceKitt) {
+    if (!this.voiceJarvis ) {
       console.warn('Voices not loaded yet');
       return;
     }

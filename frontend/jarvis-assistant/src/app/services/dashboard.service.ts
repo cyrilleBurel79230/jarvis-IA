@@ -1,34 +1,24 @@
 import { Injectable } from '@angular/core';
 import { CaveService } from './cave.service';
-import { GardenService } from './garden.service';
-import { AgendaService } from './agenda.service';
-import { DiabeteService } from './diabete.service';
-import { MailService } from './mail.service';
 import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
 
-  constructor(
-    private cave: CaveService,
-    private diabete: DiabeteService,
-    private garden: GardenService,
-    private agenda: AgendaService,
-    private mail: MailService
-    ) { }
+  constructor(private cave: CaveService) {}
 
-  getAllSummaries(): Observable<Record<string, string >> {
+  getAllSummaries(): Observable<Record<string, string>> {
     return forkJoin({
-      cave : this.cave.getDashboardSummary(),
-      diabete : this.diabete.getDashboardSummary(),
-      garden: this.garden.getDashboardSummary(),
-      agenda: this.agenda.getDashboardSummary(),
-      mail: this.mail.getDashboardSummary()
-      });
+      cave: this.cave.getDashboardSummary().pipe(
+        // On s'assure que chaque observable renvoie une string simple
+        // Si c'est déjà le cas, cette étape peut être ignorée
+        map(result => result.summary)
+      )
+      // Tu peux ajouter d’autres sources ici, par exemple :
+      // cellar2: this.otherCave.getDashboardSummary().pipe(map(r => r.summary))
+    });
   }
-
-
-
 }
