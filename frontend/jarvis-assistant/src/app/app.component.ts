@@ -1,16 +1,19 @@
 import { Component } from '@angular/core';
-import { AssistantComponent } from './assistant/assistant.component';
-import { AudioUploadComponent } from './components/audio-upload/audio-upload.component'
+import { VoiceCommandComponent } from "./components/voice-command/voice-command.component";
+import { RouterOutlet } from "../../node_modules/@angular/router/index";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ 
-    AssistantComponent,
-    AudioUploadComponent
-  ],
+  imports: [
+    VoiceCommandComponent,
+    RouterOutlet
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'jarvis-assistant';
+
+// Ajout d'effet visuel ou autres comportements globaux
+
 }

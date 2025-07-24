@@ -1,1 +1,52 @@
+:root{
+    --primary:#00fbff;    
+    --secondary:#1e293b;
+    --accent: #7e22ce;
+    --dark:#0f172a;
+}
+body{
+
+    font-family: 'Orbitron', sans-serif;
+    background-color: var(--dark);
+    color: var(--primary);
+
+}
+
+.speaking{
+    animation:pulse 0.6s ease-in-out infinite;
+
+}
+
+@keyframes pulse{
+    0%{
+        transform: scale(1);
+        opacity: 1;
+    }
+    50%{
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100%{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.btn-voice {
+    background-color: rgba(0, 240, 255, 0.1);
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s;
+    color: var(--primary);
+
+    &:cover{
+        background-color: rgba(0, 240, 255, 0.2);
+    }
+}
+
+
+
 /* You can add global styles to this file, and also import other style files */

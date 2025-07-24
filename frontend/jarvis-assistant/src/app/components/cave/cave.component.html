@@ -1,0 +1,19 @@
+<div class="jarvis-cave-map">
+  <h2>🛢️ Plan interactif de la cave</h2>
+
+  <div class="zone" *ngFor="let zone of zones" (click)="selectZone(zone)">
+    <svg viewBox="0 0 100 100">
+      <rect width="100" height="100" rx="12" />
+    </svg>
+    <span>{{ zone.name }}</span>
+  </div>
+
+  <div class="zone-details" *ngIf="selectedZone">
+    <h3>{{ selectedZone.name }}</h3>
+    <p>{{ selectedZone.description }}</p>
+    <p>Bouteilles : {{ selectedZone.bottles }}</p>
+    <button (click)="jarvis.speakForModule(selectedZone.description, 'cave')">
+      🔊 Lecture vocale
+    </button>
+  </div>
+</div>

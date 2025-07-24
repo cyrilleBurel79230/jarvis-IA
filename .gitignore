@@ -134,3 +134,10 @@ ffmpeg/
 
 readme.txt
 launch.json
+
+ Dockerfile.ocr
+ Dockerfile
+ Dockerfile.voice
+# Ignore VS Code settings
+.vscode/    
+

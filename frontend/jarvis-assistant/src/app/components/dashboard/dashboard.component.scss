@@ -1,0 +1,22 @@
+.jarvis-dashboard {
+    background: linear-gradient(to right, #0f172a, #1e293b);
+    padding: 24px;
+    color: #00f0ff;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+
+.summary-card{
+    margin-bottom: 16px;
+    padding: 12px;
+    border: 1px solid #00f0ff;
+    border-radius: 8px;
+    background-color: rgba(0, 240, 255, 0.03);
+    transition: transform 0.3s;
+    &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0px 8px rgba(0, 240, 255, 0.4);
+    }   
+}

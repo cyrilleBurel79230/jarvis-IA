@@ -1,0 +1,14 @@
+
+<div id="jarvis-response" class="command-line font-mono text-primary">
+  <p>Bonjour Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui</p> 
+</div>
+<app-voice-command />
+
+
+<div class="jarvis-dashboard">
+    <h2>Synthèse des modules </h2>
+    <div class="summary-card" *ngFor = "let key of summaries | keyvalue">
+        <h3>{{key.key | titlecase}}</h3>
+        <p>{{key.value}}</p>
+    </div>
+</div>
