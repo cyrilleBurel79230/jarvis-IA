@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { VoiceCommandComponent } from "./components/voice-command/voice-command.component";
-import { RouterOutlet } from "../../node_modules/@angular/router/index";
 import { CaveComponent } from "./components/cave/cave.component";
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     VoiceCommandComponent,
-    RouterOutlet,
-    CaveComponent
+    CaveComponent,
+    HttpClientModule,
+    CommonModule
 ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

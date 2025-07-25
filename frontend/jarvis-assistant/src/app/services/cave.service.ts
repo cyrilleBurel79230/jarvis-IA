@@ -12,7 +12,7 @@ export interface BottleUpdatePayload {
 
 @Injectable({ providedIn: 'root' })
 export class CaveService {
-  private apiUrl = 'https://deepsite-backend.com/api/cave'; // modifie selon ton backend
+  private apiUrl = 'http://localhost:3000/api/cave'; // modifie selon ton backend
 
   constructor(private http: HttpClient) {}
 
@@ -55,4 +55,9 @@ export class CaveService {
       })
     );
   }
+getStats() {
+  return this.http.get<{ totalZones: number; totalBottles: number }>('/api/cave/stats');
+}
+
+
 }

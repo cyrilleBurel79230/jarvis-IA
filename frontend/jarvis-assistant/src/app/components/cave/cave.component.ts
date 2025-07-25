@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { VoiceService } from '../../services/voice.service';
 import { CaveService } from '../../services/cave.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-cave',
   standalone: true,
+  imports: [HttpClientModule,CommonModule],
   templateUrl: './cave.component.html',
   styleUrls: ['./cave.component.scss'],
-  providers: [VoiceService]
+  providers: [VoiceService, CaveService]
 })
 export class CaveComponent implements OnInit {
   stats = { total: 0, mature: 0, alerts: 0 };
@@ -20,19 +24,27 @@ export class CaveComponent implements OnInit {
 
   selectedZone: any = null;
 
-  constructor(private cave: CaveService, private voiceService: VoiceService) {}
+  constructor(private caveService: CaveService, public voiceService: VoiceService) {}
 
   ngOnInit(): void {
+    /*
+     this.caveService.getStats().subscribe(stats => {
+    console.log('📊 Statistiques cave :', stats);
+    });*/
+
     console.log('CaveComponent initialized');
-    this.cave.getWineStats().subscribe(data => {
+    /*
+    this.caveService.getWineStats().subscribe(data => {
       this.stats = data;
       const phrase = `Il y a ${data.total} bouteilles dans la cave, dont ${data.mature} sont mûres et ${data.alerts} ont des alertes.`; 
       this.voiceService.speakForModule(phrase, 'cave', 'jarvis');
       console.log('Wine stats loaded:', this.stats);
-    });
+    });*/
   }
 
-  selectZone(zone: any): void {
-    this.selectedZone = zone;
-  }
+speakZone(zone: any): void {
+  const phrase = `Vous avez sélectionné ${zone.name}. ${zone.description}`;
+  this.voiceService.speakForModule(phrase, 'cave', 'jarvis');
+}
+
 }

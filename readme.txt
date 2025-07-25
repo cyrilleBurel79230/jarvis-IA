@@ -61,3 +61,7 @@ curl -X POST https://api-inference.huggingface.co/models/gpt2 \
      -d '{"inputs": "Explique-moi la bourse en français.", "parameters": {"max_new_tokens": 100, "temperature": 0.7}}'
 Docker :
 Lancer Docker desktop du pc puis lancer la comande docker build -t jarvis-ia .
+
+pour lancer un mock 
+ C:\Users\cyril\OneDrive\Documents\Projet_assistants_IA\jarvis-IA\frontend\jarvis-assistant\src\app\mock> node cave-server.js
+Cave backend actif sur http://localhost:3000/api/cave
