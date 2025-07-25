@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { VoiceService } from '../../services/voice.service';
-import { CaveService } from '../../services/cave.service';
+import { VoiceService } from '../voice-command/service/voice.service';
+import { CaveService } from '../cave/service/cave.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 

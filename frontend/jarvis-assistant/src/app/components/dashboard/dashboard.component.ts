@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '../../services/dashboard.service';
-import { VoiceService } from '../../services/voice.service';
+import { DashboardService } from './service/dashboard.service';
+import { VoiceService } from '../voice-command/service/voice.service';
 import { VoiceCommandComponent } from "../voice-command/voice-command.component"; // Assurez-vous d'importer le service de voix si nécessaire  
 import { CommonModule } from '@angular/common';
 

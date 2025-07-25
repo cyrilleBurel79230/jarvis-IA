@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { SpeechToTextService } from '../../services/speech-to-text.service';
+import { SpeechToTextService } from '../voice-command/service/speech-to-text.service';
 
 
 @Component({

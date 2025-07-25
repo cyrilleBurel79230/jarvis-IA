@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CaveService } from './cave.service';
+import { CaveService } from '../../cave/service/cave.service';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
