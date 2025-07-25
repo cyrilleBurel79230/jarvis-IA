@@ -47,6 +47,27 @@ body{
     }
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-
+.jarvis-bg {
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.1) 0%, rgba(15, 23, 42, 1) 70%);
+        }
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+        }
+        .command-line {
+            text-shadow: 0 0 5px #00f0ff;
+        }
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: none;
+            }
+            .mobile-menu.active {
+                display: flex;
+            }
+        }
 /* You can add global styles to this file, and also import other style files */

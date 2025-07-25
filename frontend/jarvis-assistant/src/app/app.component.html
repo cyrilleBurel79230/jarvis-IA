@@ -1,7 +1,202 @@
+<!-- Interface principale -->
+ 
+<div class="min-h-screen bg-gray-900 text-white font-sans">
+    <div class="container mx-auto px-4 py-4 max-w-6xl">
+        <!-- Menu mobile -->
+        <div class="md:hidden flex justify-between items-center mb-4">
+            <button id="mobile-menu-button" class="text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <h1 class="text-xl font-orbitron text-primary">JARVIS</h1>
+            <div class="w-8"></div> <!-- Pour l'alignement -->
+        </div>
+
+        <div id="mobile-menu" class="mobile-menu flex-col bg-secondary/90 rounded-lg p-4 mb-4 hidden">
+            <button class="py-2 px-4 text-left hover:bg-primary/10 rounded">Tableau de bord</button>
+            <button class="py-2 px-4 text-left hover:bg-primary/10 rounded">Cave à vin</button>
+            <button class="py-2 px-4 text-left hover:bg-primary/10 rounded">Mon Jardin</button>
+            <button class="py-2 px-4 text-left hover:bg-primary/10 rounded">Santé</button>
+            <button class="py-2 px-4 text-left hover:bg-primary/10 rounded">Agenda</button>
+        </div>
+
+        <!-- En-tête JARVIS (version desktop) -->
+        <header class="hidden md:flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-4">
+                <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+                    <div class="w-12 h-12 rounded-full bg-primary/40 animate-pulse-slow"></div>
+                </div>
+                <h1 class="text-3xl font-orbitron text-primary">JARVIS</h1>
+            </div>
+            <div class="text-sm text-gray-400">
+                <div id="datetime" class="font-orbitron"></div>
+            </div>
+        </header>
+
+        <!-- Interface vocale -->
+        <div class="glass-effect rounded-xl p-4 md:p-6 mb-6">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                    <div class="w-6 h-6 rounded-full bg-primary animate-pulse"></div>
+                </div>
+                <h2 class="text-xl font-orbitron">Assistant Vocal</h2>
+            </div>
+            
+            <div class="bg-black/50 rounded-lg p-4 min-h-32 mb-4">
+                <div id="jarvis-response" class="command-line font-mono text-primary">
+                    <p>Bonjour, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+                <button id="voice-command" class="w-full md:w-auto bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg font-orbitron transition-all flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Commande vocale</span>
+                </button>
+                <div class="relative w-full">
+                    <input type="text" id="text-command" placeholder="Tapez votre commande..." class="w-full bg-black/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                    <button id="send-command" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+       
+
+        <!-- Tableau de bord -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Module Cave à vin -->
+            <div class="glass-effect rounded-xl p-6 hover:border-primary/50 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-orbitron text-primary">Ma Cave à Vin</h3>
+                    <span class="text-xs bg-primary/20 text-primary px-2 py-1 rounded">Connecté à n8n</span>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span>Bouteilles restantes</span>
+                        <span class="font-orbitron">24</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span>Dernière ajout</span>
+                        <span class="font-orbitron">Château Margaux 2015</span>
+                    </div>
+                    <button class="w-full mt-4 bg-accent/20 hover:bg-accent/30 text-accent py-2 rounded-lg text-sm font-orbitron transition-all">
+                        Voir toute la collection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> 
+ <!-- Effet JARVIS flottant -->
+    <div class="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 animate-float">
+        <div class="w-12 h-12 rounded-full bg-primary/40 animate-pulse-slow"></div>
+    </div>
+
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00f0ff",
+                        secondary: "#1e293b",
+                        accent: "#7e22ce",
+                        dark: "#0f172a",
+                        health: "#10b981"
+                    },
+                    fontFamily: {
+                        orbitron: ["Orbitron", "sans-serif"],
+                        roboto: ["Roboto", "sans-serif"]
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Mise à jour de la date et heure
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('fr-FR', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // Menu mobile
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('active');
+        });
+
+        // Simulation de l'IA JARVIS
+        document.getElementById('send-command').addEventListener('click', function() {
+            const command = document.getElementById('text-command').value.trim();
+            if (command) {
+                const responseBox = document.getElementById('jarvis-response');
+                responseBox.innerHTML = `<p class="text-primary">> ${command}</p>`;
+                
+                // Simulation de réponse
+                setTimeout(() => {
+                    let response = "";
+                    if (command.toLowerCase().includes("cave") || command.toLowerCase().includes("vin")) {
+                        response = "J'ai mis à jour votre cave à vin via n8n. Vous avez maintenant 24 bouteilles en stock.";
+                    } else if (command.toLowerCase().includes("jardin") || command.toLowerCase().includes("arroser")) {
+                        response = "J'ai programmé l'arrosage automatique pour demain matin via le système connecté.";
+                    } else if (command.toLowerCase().includes("glycémie") || command.toLowerCase().includes("diabète")) {
+                        response = "Votre dernière mesure était de 112 mg/dL. Je vous recommande une promenade après le repas.";
+                    } else {
+                        response = "J'ai bien noté votre demande. Souhaitez-vous que j'effectue une action spécifique ?";
+                    }
+                    
+                    responseBox.innerHTML += `<p class="mt-2">${response}</p>`;
+                    document.getElementById('text-command').value = "";
+                }, 1000);
+            }
+        });
+
+        // Gestion de la commande vocale
+        document.getElementById('voice-command').addEventListener('click', function() {
+            const responseBox = document.getElementById('jarvis-response');
+            responseBox.innerHTML = '<p class="text-primary">Écoute en cours... Parlez maintenant.</p>';
+            
+            // Simulation de reconnaissance vocale
+            setTimeout(() => {
+                responseBox.innerHTML += '<p class="mt-2">Commande reçue : "Programmer l\'arrosage du jardin pour demain 8h". J\'ai envoyé la requête au système d\'irrigation via n8n.</p>';
+            }, 2000);
+        });
+
+    
+</script>
+</div>
+
+
+<h1 class="text-3xl font-bold text-blue-600 text-center mt-10">
+  Hello Tailwind + Angular!
+</h1>
  <main class=""grid grid-cols1 md=":grid-cols-2 xl:grid-cols-3 gap-6 p-6">
 
-    <!-- Barre vocale toujours en haut-->
-
+   
     <div class="bg-black/50 rounded-lg p-4 min-h-32 col-span-full">
     <div id="jarvis-response" class="command-line font-mono text-primary">
         <p>Bonjour, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?</p>
@@ -9,6 +204,6 @@
         <app-voice-command />
     </div>
 
-    <!--Module Ma cave-->
+   
     <app-cave></app-cave>
 </main>

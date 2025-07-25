@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { CaveComponent } from './components/cave/cave.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CaveMapComponent } from './components/cave-map/cave-map.component';
+import { CaveMapComponent } from './components/cave/cave-map/cave-map.component';
 
 export const routes: Routes = [
   {
