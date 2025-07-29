@@ -4,9 +4,9 @@ const app = express();
 const port = 3000;
 
 const zones = [
-  { id: 1, name: 'Zone A', description: 'Vins rouges anciens', bottles: 24 },
-  { id: 2, name: 'Zone B', description: 'Blancs moelleux', bottles: 12 },
-  { id: 3, name: 'Zone C', description: 'Champagnes et effervescents', bottles: 30 }
+  { id: 1, name: 'Zone A', description: 'Vins rouges anciens', bottles: 24 ,status: 'mature'},
+  { id: 2, name: 'Zone B', description: 'Blancs moelleux', bottles: 12 ,status: 'mature'},
+  { id: 3, name: 'Zone C', description: 'Champagnes et effervescents', bottles: 30,status: 'mature' }
 ];
 
 app.use(express.json());
@@ -17,9 +17,20 @@ app.get('/api/cave', (req, res) => {
 });
 
 // GET une zone spécifique
+
 app.get('/api/cave/:id', (req, res) => {
   const zone = zones.find(z => z.id === parseInt(req.params.id));
   zone ? res.json(zone) : res.status(404).send({ error: 'Zone non trouvée' });
+});
+
+// GET une zone spécifique
+app.get('/api/cave/bottles', (req, res) => {
+   //  const totalBottles = zones.reduce((sum, zone) => sum + zone.bottles, 0);
+
+     const bottlesByZone = zones.map(({ name, bottles }) => ({ name, bottles }));
+  res.json(bottlesByZone);
+ // res.json({ totalBottles });
+
 });
 
 // POST pour ajouter une nouvelle zone

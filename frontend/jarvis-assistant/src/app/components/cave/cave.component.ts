@@ -25,19 +25,19 @@ export class CaveComponent implements OnInit {
   constructor(private caveService: CaveService, public voiceService: VoiceService) {}
 
   ngOnInit(): void {
-    /*
+    
      this.caveService.getStats().subscribe(stats => {
     console.log('📊 Statistiques cave :', stats);
-    });*/
+    });
 
     console.log('CaveComponent initialized');
-    /*
+   
     this.caveService.getWineStats().subscribe(data => {
       this.stats = data;
       const phrase = `Il y a ${data.total} bouteilles dans la cave, dont ${data.mature} sont mûres et ${data.alerts} ont des alertes.`; 
       this.voiceService.speakForModule(phrase, 'cave', 'jarvis');
       console.log('Wine stats loaded:', this.stats);
-    });*/
+    });
   }
 
 speakZone(zone: any): void {

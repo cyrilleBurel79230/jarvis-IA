@@ -1,14 +1,1 @@
-.jarvis-voice-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100; /* Assurez-vous que la barre est au-dessus des autres éléments */
-    backdrop-filter: blur(8px); /* Effet de flou */
-    border-bottom: 1px solid #00f0ff; /* Bordure pour séparer visuellement */
-    padding: 12px; /* Espacement interne */
-    box-shadow: 0 2px 6px rgba(0, 240, 255, 0.15); /* Ombre pour un effet de profondeur */
-}
-
-.jarvis-voice-bar.speaking {
-  background-color: rgba(0, 240, 255, 0.12);
-  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
-}
+@tailwind

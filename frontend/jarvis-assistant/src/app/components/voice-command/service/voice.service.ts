@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class VoiceService {
+
   private synth: SpeechSynthesis | null = typeof window !== 'undefined' ? window.speechSynthesis : null;
   private voiceJarvis: SpeechSynthesisVoice | null = null;
 
@@ -12,6 +13,7 @@ export class VoiceService {
     }
 
     // Préchargement des voix si déjà prêtes
+  
     const voices = this.synth.getVoices();
     if (voices.length) {
       this.setVoice(voices);
@@ -28,7 +30,7 @@ export class VoiceService {
 
   private setVoice(voices: SpeechSynthesisVoice[]) {
     this.voiceJarvis = voices.find(voice =>
-      voice.name.includes('Google UK') || voice.lang === 'en-GB'
+      voice.name.includes('Google FR') || voice.lang === 'fr-FR'
     ) ?? null;
   }
 
@@ -43,7 +45,7 @@ export class VoiceService {
 
     const utter = new SpeechSynthesisUtterance(text);
     utter.voice = this.voiceJarvis;
-    utter.lang = 'en-GB';
+    utter.lang = 'fr-FR';
     utter.rate = assistant === 'jarvis' ? 0.9 : 1.2;
     utter.pitch = assistant === 'jarvis' ? 0.75 : 0.5;
     utter.volume = 1;
@@ -76,4 +78,5 @@ export class VoiceService {
       bar.classList.toggle('speaking', active);
     }
   }
+    
 }

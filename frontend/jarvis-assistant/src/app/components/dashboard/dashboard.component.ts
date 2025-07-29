@@ -24,13 +24,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     // Initialisation du composant
     console.log('DashboardComponent initialized');
+   
+
    /*
     this.dashboardService.getAllSummaries().subscribe(data => {
-      this.summaries = data;
-      // Lecture vocale du résumé cave à l'ouverture du tableau de bord
-      this.voiceService.speakForModule(data['cave'],'cave', 'jarvis');
-      console.log('Summaries loaded:', this.summaries);
-    }); */
+        this.summaries = data;
+        // Lecture vocale du résumé cave à l'ouverture du tableau de bord
+        this.voiceService.speakForModule(data['cave'],'cave', 'jarvis');
+        console.log('Summaries loaded:', this.summaries);
+    }); 
+    */
   }
 
   // Méthodes supplémentaires pour le tableau de bord peuvent être ajoutées ici
