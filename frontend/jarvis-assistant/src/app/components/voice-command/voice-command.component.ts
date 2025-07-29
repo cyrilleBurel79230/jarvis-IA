@@ -3,6 +3,14 @@ import { SHARED_IMPORTS } from '../../shared/shared';
 import { VoiceService } from './service/voice.service';
 import { PlatformService } from '../../core/services/platform.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+
+declare interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+  message?: string;
+}
+
 
 @Component({
   selector: 'app-voice-command',
@@ -13,12 +21,18 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class VoiceCommandComponent implements OnInit, AfterViewInit {
 
+  
+  
+  
+  
   recognition: any
   commandText:string = '';
   jarvisReply = '';
+  isListening = false;
 
+  private askSub: Subscription | null = null;
 
-   reponseJarvis = "Bonjour Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
+  reponseJarvis = "Bonjour Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
   constructor(
         private voiceService: VoiceService,
         private platformService: PlatformService,
@@ -63,7 +77,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
     this.voiceService.replySubject.subscribe(text => {
         //this.jarvisReply = text; // 🖥️ affichage en parallèle
         this.onVoiceResponse(text); // 🖥️ affichage en parallèle 
-        console.log('jarvisReply:', text);
+        console.log('jarvisReply:', this.jarvisReply);
       });
 
     
@@ -94,20 +108,70 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
       this.reponseJarvis = 'Bonjour Monsieur ! Comment puis-je vous aider ?';
     } else if (command.includes('active l’alarme')) {
       this.activateAlarm();
+    
+    } else if(command.includes('stop')){
+        this.voiceService.stopSpeaking();
+        this.cancelAsk();
+    
     } else {
-      this.voiceService.speakForModule(`Commande reçue : ${command}`, 'ui', 'jarvis');
+   
+      if (this.askSub) {
+         this.askSub.unsubscribe(); // annule la précédente requête si encore active
+      }
+      this.askSub = this.voiceService.ask(command).subscribe({
+        next: res => {
+          this.reponseJarvis = res.response;
+          this.voiceService.speakForModule(res.response, 'ui', 'jarvis');
+          this.onVoiceResponse(this.reponseJarvis); // 🖥️ affichage en parallèle
+          console.log('Réponse de Jarvis:', this.reponseJarvis);
+        },
+        error: err => console.error('Erreur Backend:',err)
+      })
+      
     }
    
    
   }
+stopListening(): void {
+  if (this.recognition && this.isListening) {
+    this.recognition.stop();
+    this.isListening = false;
+  }
+}
+  cancelAsk() {
+  this.askSub?.unsubscribe();
+  this.askSub = null;
+  this.voiceService.stopSpeaking();
+}
  activateAlarm() {
     // 💥 Exemple de méthode
     console.log('Alarme activée');
     this.voiceService.speakForModule('Alarme activée.', 'ui', 'jarvis');
   }
 
-  startListening() {
-    this.recognition?.start();
+  startListening(): void {
+      if (this.isListening) {
+        console.warn('🎙️ Déjà en train d’écouter');
+        return;
+      }
+
+      try {
+        this.recognition?.start();
+        this.isListening = true;
+
+        this.recognition!.onend = () => {
+          this.isListening = false;
+          console.log('🎙️ Fin de l’écoute');
+        };
+
+        this.recognition!.onerror = (event: SpeechRecognitionErrorEvent) => {
+          this.isListening = false;
+          console.error('❌ Erreur de reconnaissance vocale :', event.error);
+        };
+      } catch (error) {
+        console.error('⚠️ startListening() a échoué :', error);
+        this.isListening = false;
+      }
   }
   // le module voice command
   getResumeVoiceCommand(message: string): void {
