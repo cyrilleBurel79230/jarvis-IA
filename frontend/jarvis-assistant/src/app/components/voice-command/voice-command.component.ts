@@ -1,6 +1,8 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,AfterViewInit } from '@angular/core';
 import { SHARED_IMPORTS } from '../../shared/shared';
 import { VoiceService } from './service/voice.service';
+import { PlatformService } from '../../core/services/platform.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-voice-command',
@@ -9,23 +11,60 @@ import { VoiceService } from './service/voice.service';
   templateUrl: './voice-command.component.html',
   styleUrl: './voice-command.component.css'
 })
-export class VoiceCommandComponent implements OnInit {
+export class VoiceCommandComponent implements OnInit, AfterViewInit {
 
   recognition: any
   commandText:string = '';
+  jarvisReply = '';
 
 
-   message = "Bonjour, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
-  constructor(private voiceService: VoiceService) {}
+   reponseJarvis = "Bonjour Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
+  constructor(
+        private voiceService: VoiceService,
+        private platformService: PlatformService,
+        private cdr: ChangeDetectorRef
+  ) {}
+ 
+// il faudra utiliser detectChange() quand on passera par une api
+  onVoiceResponse(text: string) {
+    this.jarvisReply = text;
+    this.cdr.detectChanges(); // 💡 déclenche le rafraîchissement du template
+  }
+
+  ngAfterViewInit(): void {
+    // Initialisation de la reconnaissance vocale après que la vue soit complètement chargée
+    console.log('VoiceCommandComponent view initialized');
+    if(this.platformService.isBrowser()) {
+      console.log('Le composant est exécuté dans un navigateur');
+      this.setupVoiceRecognition();
+    } else {
+      console.warn('La reconnaissance vocale n\'est pas supportée dans cet environnement');
+    }
+    
+    // Appel de la méthode pour obtenir le résumé de la commande vocale
+  //  this.getResumeVoiceCommand(this.reponseJarvis);
+
+     
+
+  }
   
   ngOnInit(): void {
-    // Initialisation du composant
-    console.log('VoiceCommandComponent initialized');
+      // Initialisation du composant
+      console.log('VoiceCommandComponent initialized');
+      if(this.platformService.isBrowser()) {
+        console.log('Le composant est exécuté dans un navigateur');
+        this.setupVoiceRecognition();
+       
+    }
     
     // Appel de la méthode pour obtenir le résumé de la commande vocale
     //this.getResumeVoiceCommand(this.message);
-    this.setupVoiceRecognition();
-
+    
+    this.voiceService.replySubject.subscribe(text => {
+        //this.jarvisReply = text; // 🖥️ affichage en parallèle
+        this.onVoiceResponse(text); // 🖥️ affichage en parallèle 
+        console.log('jarvisReply:', text);
+      });
 
     
   }
@@ -48,16 +87,18 @@ export class VoiceCommandComponent implements OnInit {
     };
   }
 
-
  handleCommand(command: string) {
     // 🚀 Commandes personnalisées
     if (command.includes('bonjour')) {
       this.voiceService.speakForModule('Bonjour Monsieur ! Comment puis-je vous aider ?', 'ui', 'jarvis');
+      this.reponseJarvis = 'Bonjour Monsieur ! Comment puis-je vous aider ?';
     } else if (command.includes('active l’alarme')) {
       this.activateAlarm();
     } else {
       this.voiceService.speakForModule(`Commande reçue : ${command}`, 'ui', 'jarvis');
     }
+   
+   
   }
  activateAlarm() {
     // 💥 Exemple de méthode
@@ -65,14 +106,9 @@ export class VoiceCommandComponent implements OnInit {
     this.voiceService.speakForModule('Alarme activée.', 'ui', 'jarvis');
   }
 
-
-
   startListening() {
     this.recognition?.start();
   }
-
-
-
   // le module voice command
   getResumeVoiceCommand(message: string): void {
     this.voiceService.speakForModule(message, 'dashboard', 'jarvis');
@@ -80,8 +116,9 @@ export class VoiceCommandComponent implements OnInit {
   }
   
 
-
+/*
   speak(){
+    console.log('🔊 Jarvis va parler :', this.jarvisReply);
 
     // Logique pour déclencher la lecture vocale
     console.log('Lecture vocale activée');
@@ -103,7 +140,7 @@ export class VoiceCommandComponent implements OnInit {
     // Vous pouvez également ajouter des options de voix, de volume, etc. si nécessaire
     console.log('Lecture vocale terminée');
 
-  }
+  }*/
   startVoiceNavigation(){
     
     const recognition = new (window as any).webkitSpeechRecognition();

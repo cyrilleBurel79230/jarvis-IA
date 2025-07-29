@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class VoiceService {
 
   private synth: SpeechSynthesis | null = typeof window !== 'undefined' ? window.speechSynthesis : null;
   private voiceJarvis: SpeechSynthesisVoice | null = null;
-
+  replySubject = new Subject<string>();
   constructor() {
     if (!this.synth) {
       console.warn('🧠 speechSynthesis non disponible dans cet environnement');
@@ -35,6 +36,12 @@ export class VoiceService {
   }
 
   speakForModule(text: string, domain: string, assistant: 'jarvis') {
+
+  
+  
+   
+  
+
     if (!this.synth) return;
 
     if (!this.voiceJarvis) {
@@ -57,15 +64,19 @@ export class VoiceService {
 
     utter.onend = () => {
       this.activateVoiceBar(false);
+      this.replySubject.next(text); // 🔥 broadcast de la réponse
       console.log(`✅ Lecture terminée par ${assistant} dans le domaine ${domain}`);
+      console.log(`✅ replySubject ${text}`);
     };
 
     utter.onerror = event => {
       this.activateVoiceBar(false);
       console.error(`⚠️ Erreur de lecture :`, event.error);
     };
-
+    
     this.synth.speak(utter);
+   
+
   }
 
   // Affiche la barre d'animation vocale

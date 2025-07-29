@@ -15,8 +15,9 @@
             
             
             <div class="bg-black/50 rounded-lg p-4 min-h-32 mb-4">
-                <div id="jarvis-response" class="command-line font-mono text-primary">
-                    <p>{{message}}</p>
+                <div id="jarvis-response" class="command-line font-mono text-primary" >
+                    <p style="color: limegreen">{{ jarvisReply || '⛔ Rien à afficher' }}</p>
+
                 </div>
             </div>
 			<div class="flex items-center space-x-4 mb-4">
@@ -34,7 +35,7 @@
                     <span>Commande vocale</span>
                 </button>
                 <div class="relative w-full">
-                    <input type="text" [value]="commandText" id="text-command" placeholder="Tapez votre commande..." class="w-full bg-black/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                    <input type="text" id="text-command" placeholder="Tapez votre commande..." class="w-full bg-black/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <button id="send-command" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
