@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { SHARED_IMPORTS } from '../../shared/shared';
 
 @Component({
   selector: 'app-voice-command',
   standalone: true,
-  imports: [],
+  imports: [SHARED_IMPORTS],
   templateUrl: './voice-command.component.html',
-  styleUrl: './voice-command.component.scss'
+  styleUrl: './voice-command.component.css'
 })
 export class VoiceCommandComponent {
   speak(){

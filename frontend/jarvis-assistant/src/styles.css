@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+/*
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*/
+
+/* 🎨 Variables globales */
+:root {
+  --primary: #00fbff;
+  --secondary: #1e293b;
+  --accent: #7e22ce;
+  --dark: #0f172a;
+}
+
+/* 🌌 Fond et typographie globale */
+body {
+  font-family: 'Orbitron', sans-serif;
+  background-color: var(--dark);
+  color: var(--primary);
+}
+
+/* 🔊 Effet vocal */
+.speaking {
+  animation: pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 🎛️ Bouton vocal */
+.btn-voice {
+  background-color: rgba(0, 240, 255, 0.1);
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 1px solid var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: 0.3s;
+  color: var(--primary);
+}
+
+.btn-voice:hover {
+  background-color: rgba(0, 240, 255, 0.2);
+}
+
+/* 🧪 Effets de fond et vitrages */
+.jarvis-bg {
+  background: radial-gradient(circle at center, rgba(0, 240, 255, 0.1) 0%, rgba(15, 23, 42, 1) 70%);
+}
+
+.glass-effect {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+}
+
+/* 💻 Ligne de commande */
+.command-line {
+  text-shadow: 0 0 5px #00f0ff;
+}
+
+/* 📱 Responsive pour menu mobile */
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: none;
+  }
+  .mobile-menu.active {
+    display: flex;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+:root{
+    --primary:#00fbff;    
+    --secondary:#1e293b;
+    --accent: #7e22ce;
+    --dark:#0f172a;
+}
+body{
+
+    font-family: 'Orbitron', sans-serif;
+    background-color: var(--dark);
+    color: var(--primary);
+
+}
+
+.speaking{
+    animation:pulse 0.6s ease-in-out infinite;
+
+}
+
+@keyframes pulse{
+    0%{
+        transform: scale(1);
+        opacity: 1;
+    }
+    50%{
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100%{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+.btn-voice {
+    background-color: rgba(0, 240, 255, 0.1);
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s;
+    color: var(--primary);
+
+    &:cover{
+        background-color: rgba(0, 240, 255, 0.2);
+    }
+}
+
+.jarvis-bg {
+            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.1) 0%, rgba(15, 23, 42, 1) 70%);
+        }
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+        }
+        .command-line {
+            text-shadow: 0 0 5px #00f0ff;
+        }
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: none;
+            }
+            .mobile-menu.active {
+                display: flex;
+            }
+        }
+
+*/
+
+/* You can add global styles to this file, and also import other style files */

@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { VoiceService } from '../voice-command/service/voice.service';
 import { CaveService } from '../cave/service/cave.service';
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { SHARED_IMPORTS } from '../../shared/shared';
 
 
 @Component({
   selector: 'app-cave',
   standalone: true,
-  imports: [HttpClientModule,CommonModule],
+  imports: [SHARED_IMPORTS],
   templateUrl: './cave.component.html',
-  styleUrls: ['./cave.component.scss'],
-  providers: [VoiceService, CaveService]
+  styleUrls: ['./cave.component.css']
 })
 export class CaveComponent implements OnInit {
   stats = { total: 0, mature: 0, alerts: 0 };

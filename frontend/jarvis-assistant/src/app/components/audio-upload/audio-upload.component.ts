@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { SpeechToTextService } from '../voice-command/service/speech-to-text.service';
-
+import { SHARED_IMPORTS } from '../../shared/shared';
 
 @Component({
   selector: 'app-audio-upload',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [SHARED_IMPORTS],
   templateUrl: './audio-upload.component.html',
-  styleUrls:['./audio-upload.component.scss'],
-  providers:[SpeechToTextService]  
+  styleUrls:['./audio-upload.component.css']
+  
 })
 export class AudioUploadComponent {
   selectedFile?: File;

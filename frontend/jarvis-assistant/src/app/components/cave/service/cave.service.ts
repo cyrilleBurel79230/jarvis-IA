@@ -48,6 +48,7 @@ export class CaveService {
 
   // 🔸 Résumé pour Dashboard
   getDashboardSummary(): Observable<{ summary: string }> {
+ 
     return this.getAllBottles().pipe(
       map(rows => {
         const matureCount = rows.filter(bottle => bottle.status === 'mature').length;

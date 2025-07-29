@@ -1,12 +1,11 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { SHARED_IMPORTS } from './../shared/shared';
 import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-assistant',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [SHARED_IMPORTS],
   templateUrl: './assistant.component.html',
   styleUrls: ['./assistant.component.scss'],
   providers: [ApiService]

@@ -1,14 +1,18 @@
+ <!-- Interface principale -->
+<div class="min-h-screen bg-dark text-white font-roboto jarvis-bg">
+    <div class="container mx-auto px-4 py-4 max-w-6xl">
+        <header class="hidden md:flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-4">
+                <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+                    <div class="w-12 h-12 rounded-full bg-primary/40 animate-pulse-slow"></div>
+                </div>
+                <h1 class="text-3xl font-orbitron text-primary">JARVIS</h1>
+            </div>
+            <!--div class="text-sm text-gray-400">
+                <div id="datetime" class="font-orbitron"></div>
+            </div-->
+        </header>
+        <app-voice-command />
+  </div>
 
-<div id="jarvis-response" class="command-line font-mono text-primary">
-  <p>Bonjour Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui</p> 
-</div>
-<app-voice-command />
-
-
-<div class="jarvis-dashboard">
-    <h2>Synthèse des modules </h2>
-    <div class="summary-card" *ngFor = "let key of summaries | keyvalue">
-        <h3>{{key.key | titlecase}}</h3>
-        <p>{{key.value}}</p>
-    </div>
 </div>
