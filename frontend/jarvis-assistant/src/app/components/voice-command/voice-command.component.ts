@@ -21,15 +21,9 @@ declare interface SpeechRecognitionErrorEvent extends Event {
 })
 export class VoiceCommandComponent implements OnInit, AfterViewInit {
 
-  
-  
-  
-  
-  recognition: any
   commandText:string = '';
   jarvisReply = '';
-  isListening = false;
-
+  
   private askSub: Subscription | null = null;
 
   reponseJarvis = "Bonjour Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
@@ -67,7 +61,21 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
       console.log('VoiceCommandComponent initialized');
       if(this.platformService.isBrowser()) {
         console.log('Le composant est exécuté dans un navigateur');
-        this.setupVoiceRecognition();
+        this.voiceService.initializeRecognition((text: string) => {
+            console.log('🎤 Commande reçue :', text);
+
+            const commande = text.toLowerCase();
+
+            if (!commande.includes('jarvis')) return; // Wake word
+
+            if (commande.includes('météo')) {
+              this.voiceService.speakForModule("Voici la météo du jour.", 'meteo', 'jarvis');
+            } else if (commande.includes('bonjour')) {
+              this.voiceService.speakForModule("Bonjour Cyrille, content de te revoir.", 'greeting', 'jarvis');
+            } else {
+              this.voiceService.speakForModule("Commande non reconnue.", 'error', 'jarvis');
+            }
+         });
        
     }
     
@@ -83,23 +91,6 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
     
   }
 
-  setupVoiceRecognition() {
-      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
-            this.recognition = new SpeechRecognition();
-      } else {
-            console.warn('Reconnaissance vocale non supportée sur ce navigateur.');
-      }
-
-    
-      this.recognition.lang = 'fr-FR';
-      this.recognition.interimResults = false;
-
-      this.recognition.onresult = (event: any) => {
-      this.commandText = event.results[0][0].transcript;
-      this.handleCommand(this.commandText);
-    };
-  }
 
  handleCommand(command: string) {
     // 🚀 Commandes personnalisées
@@ -108,10 +99,6 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
       this.reponseJarvis = 'Bonjour Monsieur ! Comment puis-je vous aider ?';
     } else if (command.includes('active l’alarme')) {
       this.activateAlarm();
-    
-    } else if(command.includes('stop')){
-        this.voiceService.stopSpeaking();
-        this.cancelAsk();
     
     } else {
    
@@ -132,12 +119,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
    
    
   }
-stopListening(): void {
-  if (this.recognition && this.isListening) {
-    this.recognition.stop();
-    this.isListening = false;
-  }
-}
+
   cancelAsk() {
   this.askSub?.unsubscribe();
   this.askSub = null;
@@ -149,30 +131,7 @@ stopListening(): void {
     this.voiceService.speakForModule('Alarme activée.', 'ui', 'jarvis');
   }
 
-  startListening(): void {
-      if (this.isListening) {
-        console.warn('🎙️ Déjà en train d’écouter');
-        return;
-      }
-
-      try {
-        this.recognition?.start();
-        this.isListening = true;
-
-        this.recognition!.onend = () => {
-          this.isListening = false;
-          console.log('🎙️ Fin de l’écoute');
-        };
-
-        this.recognition!.onerror = (event: SpeechRecognitionErrorEvent) => {
-          this.isListening = false;
-          console.error('❌ Erreur de reconnaissance vocale :', event.error);
-        };
-      } catch (error) {
-        console.error('⚠️ startListening() a échoué :', error);
-        this.isListening = false;
-      }
-  }
+  
   // le module voice command
   getResumeVoiceCommand(message: string): void {
     this.voiceService.speakForModule(message, 'dashboard', 'jarvis');
@@ -180,31 +139,7 @@ stopListening(): void {
   }
   
 
-/*
-  speak(){
-    console.log('🔊 Jarvis va parler :', this.jarvisReply);
-
-    // Logique pour déclencher la lecture vocale
-    console.log('Lecture vocale activée');
-    // Vous pouvez appeler ici le service de voix si nécessaire
-    //this.voiceService.speak('Votre texte à lire');
-
-    const synth = window.speechSynthesis;
-    const responseText = document.querySelector("#jarvis-response p")?.textContent || "Je suis JARVIS, prêt à vous assister";
-    const utter = new SpeechSynthesisUtterance(responseText);
-    utter.lang = 'fr-FR'; // Définir la langue à français 
-
-    utter.onstart = () =>{
-      document.getElementById("Jarvis-response")?.classList.add("speaking");
-    };
-    utter.onend = () =>{
-      document.getElementById("Jarvis-response")?.classList.remove("speaking");
-    }
-    synth.speak(utter);
-    // Vous pouvez également ajouter des options de voix, de volume, etc. si nécessaire
-    console.log('Lecture vocale terminée');
-
-  }*/
+/**
   startVoiceNavigation(){
     
     const recognition = new (window as any).webkitSpeechRecognition();
@@ -213,5 +148,6 @@ stopListening(): void {
     recognition.continuous = true; // Activer la reconnaissance continue
 
   }
+    */
 
 }
