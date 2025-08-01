@@ -44,7 +44,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
     console.log('VoiceCommandComponent view initialized');
     if(this.platformService.isBrowser()) {
       console.log('Le composant est exécuté dans un navigateur');
-      this.setupVoiceRecognition();
+      
     } else {
       console.warn('La reconnaissance vocale n\'est pas supportée dans cet environnement');
     }

@@ -54,30 +54,30 @@ export class VoiceService {
   }
 
   private setVoice(voices: SpeechSynthesisVoice[]) {
-  // 🎯 Cherche une voix française avec un nom masculin ou évocateur
-  this.voiceJarvis = voices.find(voice =>
-    voice.lang === 'fr-FR' &&
-    /paul|thomas|male|homme|jarvis/i.test(voice.name)
-  )
-  // 🔄 Sinon, prend n’importe quelle voix française
-  ?? voices.find(voice => voice.lang === 'fr-FR')
-  // 🛑 Sinon, aucune voix
-  ?? null;
+    // 🎯 Cherche une voix française avec un nom masculin ou évocateur
+    this.voiceJarvis = voices.find(voice =>
+      voice.lang === 'fr-FR' &&
+      /paul|thomas|male|homme|jarvis/i.test(voice.name)
+    )
+    // 🔄 Sinon, prend n’importe quelle voix française
+    ?? voices.find(voice => voice.lang === 'fr-FR')
+    // 🛑 Sinon, aucune voix
+    ?? null;
 
-  if (this.voiceJarvis) {
-    console.log(`✅ Voix Jarvis sélectionnée : ${this.voiceJarvis.name}`);
-  } else {
-    console.warn('⚠️ Aucune voix française disponible pour Jarvis');
-  }
+    if (this.voiceJarvis) {
+      console.log(`✅ Voix Jarvis sélectionnée : ${this.voiceJarvis.name}`);
+    } else {
+      console.warn('⚠️ Aucune voix française disponible pour Jarvis');
+    }
 
-  // 🗣️ Pour debug : liste complète
-  console.table(
-    voices.map(v => ({
-      nom: v.name,
-      langue: v.lang,
-      défaut: v.default,
-    }))
-  );
+    // 🗣️ Pour debug : liste complète
+    console.table(
+      voices.map(v => ({
+        nom: v.name,
+        langue: v.lang,
+        défaut: v.default,
+      }))
+    );
 }
 
   // Nettoyage texte : enlève markdown, emojis, symboles
@@ -210,6 +210,17 @@ stopListening(): void {
     this.isListening = false;
   }
 }
+
+stopSpeaking(): void {
+  // ✅ Vérifie que le synthétiseur est disponible et qu'une lecture est en cours
+  if (this.synth && this.synth.speaking) {
+    this.synth.cancel(); // 🛑 Arrête immédiatement toute lecture vocale
+   // this.activateVoiceBar(false); // 🎨 Désactive l'animation visuelle "speaking"
+    this.speaking$.next(false);   // 🔄 Met à jour l'état observable
+    console.log('🛑 Lecture vocale arrêtée par l’utilisateur');
+  }
+}
+
   // Animation visuelle voix (à implémenter selon UI)
  // private activateVoiceBar(active: boolean): void {
     // Exemple : déclencher une animation CSS ou une LED virtuelle
