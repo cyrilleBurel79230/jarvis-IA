@@ -23,7 +23,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
 
   commandText:string = '';
   jarvisReply = '';
-  
+  isSpeaking = false;
   private askSub: Subscription | null = null;
 
   reponseJarvis = "Bonjour Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
@@ -61,23 +61,33 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
       console.log('VoiceCommandComponent initialized');
       if(this.platformService.isBrowser()) {
         console.log('Le composant est exécuté dans un navigateur');
-        this.voiceService.initializeRecognition((text: string) => {
-            console.log('🎤 Commande reçue :', text);
-
-            const commande = text.toLowerCase();
-
-            if (!commande.includes('jarvis')) return; // Wake word
-
-            if (commande.includes('météo')) {
-              this.voiceService.speakForModule("Voici la météo du jour.", 'meteo', 'jarvis');
-            } else if (commande.includes('bonjour')) {
-              this.voiceService.speakForModule("Bonjour Cyrille, content de te revoir.", 'greeting', 'jarvis');
-            } else {
-              this.voiceService.speakForModule("Commande non reconnue.", 'error', 'jarvis');
-            }
-         });
        
-    }
+        this.voiceService.initializeRecognition((text: string) => {
+          if (text.toLowerCase().includes('stop') || text.toLowerCase().includes('silence')) {
+            this.voiceService.stopSpeaking();
+            return;
+          }
+          if(this.voiceService.isListening){
+         
+            console.log('🎤 Commande reçue :', text);
+            const command = text.toLowerCase();
+            if(this.voiceService.lectureTermineIA){
+              this.handleCommand(command);
+            }
+            
+          
+          }
+          });
+
+          this.voiceService.speaking$.subscribe(state => {
+          this.isSpeaking = state;
+  });
+
+          
+      }
+
+        
+    
     
     // Appel de la méthode pour obtenir le résumé de la commande vocale
     //this.getResumeVoiceCommand(this.message);
@@ -91,6 +101,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
     
   }
 
+ 
 
  handleCommand(command: string) {
     // 🚀 Commandes personnalisées
@@ -100,6 +111,9 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
     } else if (command.includes('active l’alarme')) {
       this.activateAlarm();
     
+    } else if (command.includes('stop')){
+        this.voiceService.stopSpeaking();
+    
     } else {
    
       if (this.askSub) {
@@ -107,10 +121,20 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
       }
       this.askSub = this.voiceService.ask(command).subscribe({
         next: res => {
-          this.reponseJarvis = res.response;
-          this.voiceService.speakForModule(res.response, 'ui', 'jarvis');
-          this.onVoiceResponse(this.reponseJarvis); // 🖥️ affichage en parallèle
-          console.log('Réponse de Jarvis:', this.reponseJarvis);
+          this.reponseJarvis = this.voiceService.cleanResponse(res.response);
+          const describedText = this.voiceService.describeEmojis(this.reponseJarvis);
+      
+
+
+          if (describedText.length > 100) {
+            this.voiceService.speakInChunks(describedText, 'jarvis');
+          } else {
+            this.voiceService.speakForModule(describedText, 'ui', 'jarvis');
+          }  
+
+
+          this.onVoiceResponse(describedText); // 🖥️ affichage en parallèle
+          console.log('Réponse de Jarvis:', describedText);
         },
         error: err => console.error('Erreur Backend:',err)
       })
@@ -119,6 +143,10 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
    
    
   }
+
+
+
+
 
   cancelAsk() {
   this.askSub?.unsubscribe();
@@ -138,16 +166,15 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
     
   }
   
-
-/**
-  startVoiceNavigation(){
-    
-    const recognition = new (window as any).webkitSpeechRecognition();
-    recognition.lang = 'fr-FR'; // Définir la langue à français
-    recognition.interimResults = true; // Activer les résultats intermédiaires
-    recognition.continuous = true; // Activer la reconnaissance continue
-
+  // Lancement manuel de l’écoute
+ // startJarvis() {
+ //   this.voiceService.startListening();
+  //  this.voiceService.speakForModule("Bonjour Monsieur ! Comment puis-je vous aider ?", 'ui', 'jarvis');
+  //}
+  toggleJarvis() {
+    const message = "Bonjour Cyrille. Je suis prêt à t’aider. Tu peux m’interrompre à tout moment.";
+    this.voiceService.toggleSpeaking(message, 'jarvis');
   }
-    */
+
 
 }
