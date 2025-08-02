@@ -22,11 +22,11 @@ declare interface SpeechRecognitionErrorEvent extends Event {
 export class VoiceCommandComponent implements OnInit, AfterViewInit {
 
   commandText:string = '';
-  jarvisReply = '';
+  jarvisReply="";
   isSpeaking = false;
   private askSub: Subscription | null = null;
 
-  reponseJarvis = "Bonjour Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
+  reponseJarvis = "Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
   constructor(
         private voiceService: VoiceService,
         private platformService: PlatformService,
@@ -35,7 +35,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
  
 // il faudra utiliser detectChange() quand on passera par une api
   onVoiceResponse(text: string) {
-    this.jarvisReply = text;
+    
     this.cdr.detectChanges(); // 💡 déclenche le rafraîchissement du template
   }
 
@@ -72,6 +72,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
             console.log('🎤 Commande reçue :', text);
             const command = text.toLowerCase();
             if(this.voiceService.lectureTermineIA){
+               console.log('🎤 lecture terminé:', text);
               this.handleCommand(command);
             }
             
@@ -91,14 +92,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
     
     // Appel de la méthode pour obtenir le résumé de la commande vocale
     //this.getResumeVoiceCommand(this.message);
-    
-    this.voiceService.replySubject.subscribe(text => {
-        //this.jarvisReply = text; // 🖥️ affichage en parallèle
-        this.onVoiceResponse(text); // 🖥️ affichage en parallèle 
-        console.log('jarvisReply:', this.jarvisReply);
-      });
-
-    
+     
   }
 
  
@@ -106,8 +100,8 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
  handleCommand(command: string) {
     // 🚀 Commandes personnalisées
     if (command.includes('bonjour')) {
-      this.voiceService.speakForModule('Bonjour Monsieur ! Comment puis-je vous aider ?', 'ui', 'jarvis');
-      this.reponseJarvis = 'Bonjour Monsieur ! Comment puis-je vous aider ?';
+      this.voiceService.speakForModule('Monsieur ! Comment puis-je vous aider ?', 'ui', 'jarvis');
+      this.reponseJarvis = 'Monsieur ! Comment puis-je vous aider ?';
     } else if (command.includes('active l’alarme')) {
       this.activateAlarm();
     
@@ -132,7 +126,7 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
             this.voiceService.speakForModule(describedText, 'ui', 'jarvis');
           }  
 
-
+          this.jarvisReply=describedText;
           this.onVoiceResponse(describedText); // 🖥️ affichage en parallèle
           console.log('Réponse de Jarvis:', describedText);
         },

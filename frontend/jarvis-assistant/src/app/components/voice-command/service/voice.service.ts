@@ -26,7 +26,6 @@ export class VoiceService {
   private voiceJarvis: SpeechSynthesisVoice | null = null;// Voix sélectionnée pour Jarvis
 
   public speaking$ = new BehaviorSubject<boolean>(false);
-  public replySubject = new Subject<string>();
   private isStopped = false;
 
   private apiUrl = 'http://localhost:8000/ask';  // adapte l’URL si besoin
@@ -89,29 +88,31 @@ export class VoiceService {
     );
 }
 
-  // Nettoyage texte : enlève markdown, emojis, symboles
-  cleanResponse(text: string): string {
-    if (!text) return '';
 
-    // Supprime blocs gras et italique Markdown
-    text = text.replace(/\*\*.*?\*\*/g, '');
-    text = text.replace(/\*.*?\*/g, '');
+// Nettoyage texte : enlève markdown, emojis, symboles
+ cleanResponse(text: string): string {
+  // Supprime le gras et l'italique Markdown
+  text = text.replace(/\*\*.*?\*\*/g, '');
+  text = text.replace(/\*.*?\*/g, '');
 
-    // Supprime certains symboles (*, #, •, -)
-    text = text.replace(/[\*#•\-]/g, '');
+  // Supprime certains symboles (*, #, •, -)
+  text = text.replace(/[\*#•\-]/g, '');
 
-    // Supprime emojis avec emoji-regex
-    const regex = emojiRegex();
-    text = text.replace(regex, '');
+  // Supprime les emojis
+  const regex = emojiRegex();
+  text = text.replace(regex, '');
 
-    // Supprime caractères non autorisés sauf ponctuation basique
-    text = text.replace(/[^\w\s.,!?'"()-]+/g, '');
+  // ✅ Supprime les caractères non autorisés sauf lettres accentuées et ponctuation basique
+  text = text.replace(/[^\p{L}\p{N}\s.,!?'"()\-]+/gu, '');
 
-    // Réduit espaces multiples
-    text = text.replace(/\s{2,}/g, ' ');
+  // Réduit les espaces multiples
+  text = text.replace(/\s{2,}/g, ' ');
 
-    return text.trim();
-  }
+  return text.trim();
+}
+
+  
+  
 
   // Initialise la reconnaissance vocale continue
   initializeRecognition(onCommand: (text: string) => void): void {
@@ -170,22 +171,17 @@ export class VoiceService {
     utter.volume = 1;
 
     utter.onstart = () => {
-   //   this.activateVoiceBar(true);
       this.speaking$.next(true);
       console.log(`🔊 Lecture par ${assistant} dans le domaine ${domain}: ${text}`);
     };
 
     utter.onend = () => {
-    //  this.activateVoiceBar(false);
-      this.replySubject.next(text);
-      this.lectureTermineIA=false;
-      console.log(`✅ Lecture terminée par ${assistant}`);
+     console.log(`✅ Lecture terminée par ${assistant}`);
+     this.startListening(); // Relance l'écoute vocale
     };
 
     utter.onerror = (event) => {
-  //    this.activateVoiceBar(false);
-      this.lectureTermineIA=false;
-      console.error('⚠️ Erreur de lecture :', (event as any).error);
+        console.error('⚠️ Erreur de lecture :', (event as any).error);
     };
 
     this.synth.speak(utter);
@@ -244,7 +240,7 @@ speakInChunks(text: string, voiceType: string = 'jarvis'): void {
   };
 
   // 🚀 Démarre la lecture
-  speakNext();
+  //speakNext();
 }
 
 
@@ -277,6 +273,7 @@ speakInChunks(text: string, voiceType: string = 'jarvis'): void {
 stopListening(): void {
   if (this.recognition && this.isListening) {
     this.recognition.stop();
+    this.isStopped = true;
     this.isListening = false;
   }
 }
@@ -286,7 +283,6 @@ stopSpeaking(): void {
   if (this.synth && this.synth.speaking) {
     this.isStopped = true;
     this.synth.cancel(); // 🛑 Arrête immédiatement toute lecture vocale
-   // this.activateVoiceBar(false); // 🎨 Désactive l'animation visuelle "speaking"
     this.speaking$.next(false);   // 🔄 Met à jour l'état observable
     console.log('🛑 Lecture vocale arrêtée par l’utilisateur');
   }

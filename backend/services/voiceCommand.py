@@ -26,6 +26,13 @@ if not api_key:
 
 client = Mistral(api_key=api_key)
 
+# 🔹 Charge le prompt depuis un fichier
+with open("../prompts/jarvis.txt", "r", encoding="utf-8") as f:
+    system_prompt = f.read().strip()
+
+
+
+
 #Pour savoir les noms des models de IA
 #models = client.models.list()
 #for m in models.data:
@@ -38,10 +45,20 @@ async def ask_mistral(request: Request):
     user_message = data.get("message")
 
     try:
+        
         response = client.chat.complete(
             model="mistral-small-2506",
-            messages=[{"role": "user", "content": user_message}]
-        )
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
+            temperature=0.7,
+            top_p=0.95,
+            max_tokens=1024
+         )
+
+        print(response.choices[0].message.content)
+
         return {"response": response.choices[0].message.content}
     except Exception as e:
         print(f"[Erreur Mistral] {e}")
