@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // Initialisation du composant
+    console.log('********************* ngOnInit dashboardComponent');
     console.log('DashboardComponent initialized');
    
 

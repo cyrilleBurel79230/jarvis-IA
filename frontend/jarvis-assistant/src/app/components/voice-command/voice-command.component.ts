@@ -5,6 +5,7 @@ import { PlatformService } from '../../core/services/platform.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { JarvisElecComponent } from "../jarvis-elec/jarvis-elec.component";
+import { Router } from '@angular/router';
 
 
 declare interface SpeechRecognitionErrorEvent extends Event {
@@ -27,20 +28,22 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
   isSpeaking = false;
   private askSub: Subscription | null = null;
 
-  reponseJarvis = "Monsieur, je suis JARVIS. Comment puis-je vous aider aujourd'hui ?";
+  reponseJarvis = "";
   constructor(
         private voiceService: VoiceService,
         private platformService: PlatformService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+         private router: Router
   ) {}
  
 // il faudra utiliser detectChange() quand on passera par une api
   onVoiceResponse(text: string) {
-    
+     console.log('********************* onVoiceResponse voice-command');
     this.cdr.detectChanges(); // 💡 déclenche le rafraîchissement du template
   }
 
   ngAfterViewInit(): void {
+    console.log('********************* ngAfterViewInit voice-command');
     // Initialisation de la reconnaissance vocale après que la vue soit complètement chargée
     console.log('VoiceCommandComponent view initialized');
     if(this.platformService.isBrowser()) {
@@ -59,6 +62,9 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
   
   ngOnInit(): void {
       // Initialisation du composant
+
+console.log('********************* ngOnInit voice-command');
+
       console.log('VoiceCommandComponent initialized');
       if(this.platformService.isBrowser()) {
         console.log('Le composant est exécuté dans un navigateur');
@@ -99,10 +105,16 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
  
 
  handleCommand(command: string) {
+   this.voiceService.stopListening();  
+   console.log('********************* handleCommand voice-command');
     // 🚀 Commandes personnalisées
     if (command.includes('bonjour')) {
-      this.voiceService.speakForModule('Monsieur ! Comment puis-je vous aider ?', 'ui', 'jarvis');
-      this.reponseJarvis = 'Monsieur ! Comment puis-je vous aider ?';
+      this.voiceService.speakForModule('Bonjour Monsieur ! Comment puis-je vous aider ?', 'ui', 'jarvis');
+      
+    }else if (command.includes('ajouter') && command.includes('bouteille')) {
+      this.router.navigate(['/cave']); // remplace '/scanner' par le chemin réel de ton composant
+    } else if (command.includes('retirer') && command.includes('bouteille')) {
+      this.router.navigate(['/cave']); // remplace '/scanner' par le chemin réel de ton composant
     } else if (command.includes('active l’alarme')) {
       this.activateAlarm();
     
@@ -110,23 +122,24 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
         this.voiceService.stopSpeaking();
     
     } else {
-   
+   /*
       if (this.askSub) {
          this.askSub.unsubscribe(); // annule la précédente requête si encore active
-      }
+      }*/
+      console.log('********************* handleCommand askSub voice-command');
       this.askSub = this.voiceService.ask(command).subscribe({
         next: res => {
           this.reponseJarvis = this.voiceService.cleanResponse(res.response);
           const describedText = this.voiceService.describeEmojis(this.reponseJarvis);
       
-
-
+      this.voiceService.speakForModule(describedText, 'ui', 'jarvis');
+/*
           if (describedText.length > 100) {
             this.voiceService.speakInChunks(describedText, 'jarvis');
           } else {
             this.voiceService.speakForModule(describedText, 'ui', 'jarvis');
           }  
-
+*/
           this.jarvisReply=describedText;
           this.onVoiceResponse(describedText); // 🖥️ affichage en parallèle
           console.log('Réponse de Jarvis:', describedText);
@@ -135,19 +148,19 @@ export class VoiceCommandComponent implements OnInit, AfterViewInit {
       })
       
     }
-   
-   
+   console.log('********************* handleCommand Fin voice-command');
+    
   }
 
 
 
-
+/*
 
   cancelAsk() {
   this.askSub?.unsubscribe();
   this.askSub = null;
   this.voiceService.stopSpeaking();
-}
+}*/
  activateAlarm() {
     // 💥 Exemple de méthode
     console.log('Alarme activée');

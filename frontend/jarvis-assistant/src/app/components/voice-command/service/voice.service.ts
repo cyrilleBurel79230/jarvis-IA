@@ -35,7 +35,9 @@ export class VoiceService {
   
   constructor(private http : HttpClient) {
      // 🔈 Vérifie si la synthèse vocale est disponible
-    if (!this.synth) {
+    
+    console.log('********************* constructor VoiceService');
+     if (!this.synth) {
       console.warn('🧠 speechSynthesis non disponible dans cet environnement');
       return;
     }
@@ -55,6 +57,7 @@ export class VoiceService {
   }
 
   ask(message: string): Observable<AskResponse> {
+      console.log('********************* ask VoiceService');
     console.log(`🔊 message ask :  ${message} `);
     return this.http.post<AskResponse>(this.apiUrl, { message });
   }
@@ -62,6 +65,7 @@ export class VoiceService {
    * 🔧 Sélectionne la voix à utiliser pour Jarvis
    */
   private setVoice(voices: SpeechSynthesisVoice[]) {
+    console.log('********************* setVoice VoiceService');
     // 🎯 Cherche une voix française avec un nom masculin ou évocateur
     this.voiceJarvis = voices.find(voice =>
       voice.lang === 'fr-FR' &&
@@ -91,6 +95,7 @@ export class VoiceService {
 
 // Nettoyage texte : enlève markdown, emojis, symboles
  cleanResponse(text: string): string {
+  console.log('********************* cleanResponse VoiceService');
   // Supprime le gras et l'italique Markdown
   text = text.replace(/\*\*.*?\*\*/g, '');
   text = text.replace(/\*.*?\*/g, '');
@@ -116,7 +121,10 @@ export class VoiceService {
 
   // Initialise la reconnaissance vocale continue
   initializeRecognition(onCommand: (text: string) => void): void {
+    console.log('********************* initializeRecognition VoiceService');
+    
     const SpeechRecognition =
+
       (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
 
     if (!SpeechRecognition) {
@@ -128,33 +136,38 @@ export class VoiceService {
     this.recognition.lang = 'fr-FR';
     this.recognition.continuous = true;// Écoute en continu
     this.recognition.interimResults = false;// Pas de résultats intermédiaires
-
-    this.recognition.onresult = (event: any) => {
-      const transcript = event.results[event.results.length - 1][0].transcript.trim();
-      console.log('🧠 Commande reconnue :', transcript);
-      onCommand(transcript);
-    };
-
+    
+      this.recognition.onresult = (event: any) => {
+        console.log('********************* initializeRecognition recognition.onresult VoiceService');
+        if(this.isListening){
+            const transcript = event.results[event.results.length - 1][0].transcript.trim();
+            console.log('🧠 Commande reconnue :', transcript);
+            onCommand(transcript);
+            this.isListening=false;
+        }
+      }
+    
+    
     this.recognition.onerror = (event: any) => {
+      console.log('********************* initializeRecognition recognition.onerror VoiceService');
       console.error('❌ Erreur vocale :', event.error);
     };
 
     this.recognition.onend = () => {
+      console.log('********************* initializeRecognition recognition.onend VoiceService');
       console.log('🔁 Session terminée – relancement...');
-      setTimeout(() => this.recognition?.start(), 2500);
-    this.startListening();
+      //setTimeout(() => this.recognition?.start(), 7500);
+   
 
     };
-
-    //this.recognition.start();
-   // this.startListening();
-    
-  }
+ }
 
  
 
   // Lit vocalement un texte avec voix Jarvis et animations
   speakForModule(text: string, domain: string, assistant: 'jarvis'): void {
+    this.isListening=false;
+      console.log('********************* speakForModule VoiceService');
     if (!this.synth) return;
 
     if (!this.voiceJarvis) {
@@ -171,24 +184,33 @@ export class VoiceService {
     utter.volume = 1;
 
     utter.onstart = () => {
+      this.stopListening(); // stoppe l'écoute
+      console.log('********************* speakForModule utter.onstart VoiceService');
+    
       this.speaking$.next(true);
       console.log(`🔊 Lecture par ${assistant} dans le domaine ${domain}: ${text}`);
     };
 
     utter.onend = () => {
+      console.log('********************* speakForModule utter.onend VoiceService');
      console.log(`✅ Lecture terminée par ${assistant}`);
-     this.startListening(); // Relance l'écoute vocale
+     
+     setTimeout(() => this.startListening(), 500); // 👈 Redémarre l'écoute avec délai
     };
 
     utter.onerror = (event) => {
+      console.log('********************* speakForModule utter.onerror VoiceService');
         console.error('⚠️ Erreur de lecture :', (event as any).error);
     };
 
     this.synth.speak(utter);
+    
+      console.log('********************* speakForModule Fin VoiceService');
   }
   
 // pour permettre d'interrompte jarvis quand il parle on decoupe en phrases
 speakInChunks(text: string, voiceType: string = 'jarvis'): void {
+  console.log('********************* speakInChunks VoiceService');
   if (!text || this.synth?.speaking) return; // 🔒 Ne rien faire si déjà en train de parler
 
   // 🧩 Découpe le texte en phrases (basé sur ponctuation)
@@ -218,12 +240,14 @@ speakInChunks(text: string, voiceType: string = 'jarvis'): void {
 
     // 🔄 Déclenche animation ou état "parle"
     utterance.onstart = () => {
+       console.log('********************* speakInChunks  utterance.onstart VoiceService');
       this.speaking$.next(true);
       console.log(`🗣️ Jarvis dit : ${sentences[index]}`);
     };
 
     // ⏭️ Quand la phrase est terminée, passe à la suivante
     utterance.onend = () => {
+      console.log('********************* speakInChunks  utterance.onend VoiceService');
       this.speaking$.next(false);
       index++;
       setTimeout(() => speakNext(), 300); // ⏱️ Petite pause entre les phrases
@@ -246,6 +270,7 @@ speakInChunks(text: string, voiceType: string = 'jarvis'): void {
 
   // Démarre l'écoute (si besoin)
   startListening(): void {
+    console.log('********************* startListening VoiceService');
   if (!this.recognition) {
 
     console.warn('❌ Recognition non initialisée. Appelle initializeRecognition() d’abord.');
@@ -271,6 +296,7 @@ speakInChunks(text: string, voiceType: string = 'jarvis'): void {
   }
 }
 stopListening(): void {
+  console.log('********************* stopListening VoiceService');
   if (this.recognition && this.isListening) {
     this.recognition.stop();
     this.isStopped = true;
@@ -279,6 +305,7 @@ stopListening(): void {
 }
 
 stopSpeaking(): void {
+  console.log('********************* stopSpeaking VoiceService');
   // ✅ Vérifie que le synthétiseur est disponible et qu'une lecture est en cours
   if (this.synth && this.synth.speaking) {
     this.isStopped = true;
@@ -310,6 +337,7 @@ describeEmojis(text: string): string {
 }
 
 toggleSpeaking(text: string, voiceType: string = 'jarvis'): void {
+  console.log('********************* toggleSpeaking VoiceService');
   if (this.synth?.speaking) {
     this.stopSpeaking(); // 🛑 Interrompt la lecture
   } else {

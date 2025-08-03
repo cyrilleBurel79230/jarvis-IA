@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>OCR Fiche Produit</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      width: 400px;
+      height: 500px;
+    }
+    .controls input, .controls select, .controls button { margin: 5px; }
+    .output {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background: #f9f9f9;
+      padding: 10px;
+      border: 1px solid #ddd;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 OCR Fiche Produit V3 </h1>
+
+  <input type="file" id="imageInput" accept="image/*"><br>
+  <canvas id="canvas" width="400" height="500"></canvas>
+
+  <div class="controls">
+    <label>🗺️ Région :
+      <select id="regionSelect">
+        <option value="">-- Sélectionner --</option>
+        <option value="Bordeaux">Bordeaux</option>
+      </select>
+    </label>
+
+    <label>🏞️ Sous-région :
+      <select id="sousRegionSelect">
+        <option value="">-- Sélectionner --</option>
+      </select>
+    </label>
+
+    <label>🏷️ Appellation :
+      <select id="appellationSelect">
+        <option value="">-- Sélectionner --</option>
+      </select>
+    </label>
+
+    <label>🌿 Cépages :
+      <select id="cepagesSelect">
+        <option value="">-- Sélectionner --</option>
+        <option value="Merlot">Merlot</option>
+        <option value="Cabernet Sauvignon">Cabernet Sauvignon</option>
+        <option value="Cabernet Franc">Cabernet Franc</option>
+        <option value="Malbec">Malbec</option>
+        <option value="Petit Verdot">Petit Verdot</option>
+        <option value="Carmenère">Carmenère</option>
+        <option value="Sauvignon Blanc">Sauvignon Blanc</option>
+        <option value="Sémillon">Sémillon</option>
+        <option value="Muscadelle">Muscadelle</option>
+      </select>
+    </label>
+
+    <label>🧑‍🌾 Producteur :
+      <select id="producteurSelect">
+        <option value="">-- Sélectionner --</option>
+      </select>
+    </label>
+
+    <label>✍️ Autre producteur :
+      <input type="text" id="producteurLibre" placeholder="Nom du producteur">
+    </label>
+
+    <br>
+
+    <label>🔧 Seuil: <input type="range" id="threshold" min="0" max="255" value="128"></label>
+    <label>🌟 Contraste: <input type="range" id="contrast" min="-100" max="100" value="0"></label>
+    <label>💡 Luminosité: <input type="range" id="brightness" min="-100" max="100" value="0"></label>
+    <label>🔍 Zoom: <input type="range" id="zoom" min="0.5" max="2" step="0.1" value="1"></label>
+    <label>↻ Rotation: <input type="range" id="rotation" min="0" max="360" value="0"></label>
+    <label>💨 Flou: <input type="range" id="blur" min="0" max="10" value="0"></label>
+    <button id="runOCR">📄 Lancer OCR</button>
+    <button id="reset">🔄 Réinitialiser</button>
+  </div>
+
+  <div class="output" id="ocrText">Texte OCR apparaîtra ici...</div>
+  <div class="output" id="ocrLines">Lignes OCR détectées...</div>
+  <div class="output" id="ficheProduit">Fiche produit extraite...</div>
+  <div class="output" id="ficheTable">Fiche produit structurée...</div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let img = new Image();
+
+    const bordeauxData = {
+      Bordeaux: {
+        "Médoc": {
+          appellations: ["Margaux", "Pauillac", "Saint-Estèphe"],
+          producteurs: ["Château Margaux", "Château Lafite Rothschild", "Château Cos d'Estournel"]
+        },
+        "Graves": {
+          appellations: ["Graves", "Pessac-Léognan"],
+          producteurs: ["Château Haut-Brion", "Domaine de Chevalier"]
+        },
+        "Libournais": {
+          appellations: ["Saint-Émilion", "Pomerol"],
+          producteurs: ["Château Ausone", "Château Pétrus"]
+        },
+        "Entre-deux-Mers": {
+          appellations: ["Entre-deux-Mers"],
+          producteurs: ["Château Bonnet", "Château Sainte-Marie"]
+        },
+        "Blaye": {
+          appellations: ["Blaye Côtes de Bordeaux"],
+          producteurs: ["Château Les Bertrands"]
+        },
+        "Bourg": {
+          appellations: ["Côtes de Bourg"],
+          producteurs: ["Château Fougas"]
+        }
+      }
+    };
+
+    document.getElementById('regionSelect').addEventListener('change', () => {
+      const region = document.getElementById('regionSelect').value;
+      const sousRegionSelect = document.getElementById('sousRegionSelect');
+      sousRegionSelect.innerHTML = '<option value="">-- Sélectionner --</option>';
+
+      if (bordeauxData[region]) {
+        Object.keys(bordeauxData[region]).forEach(sr => {
+          sousRegionSelect.innerHTML += `<option value="${sr}">${sr}</option>`;
+        });
+      }
+
+      document.getElementById('appellationSelect').innerHTML = '<option value="">-- Sélectionner --</option>';
+      document.getElementById('producteurSelect').innerHTML = '<option value="">-- Sélectionner --</option>';
+    });
+
+    document.getElementById('sousRegionSelect').addEventListener('change', () => {
+      const region = document.getElementById('regionSelect').value;
+      const sousRegion = document.getElementById('sousRegionSelect').value;
+      const appellationSelect = document.getElementById('appellationSelect');
+      const producteurSelect = document.getElementById('producteurSelect');
+
+      appellationSelect.innerHTML = '<option value="">-- Sélectionner --</option>';
+      producteurSelect.innerHTML = '<option value="">-- Sélectionner --</option>';
+
+      if (bordeauxData[region] && bordeauxData[region][sousRegion]) {
+        bordeauxData[region][sousRegion].appellations.forEach(app => {
+          appellationSelect.innerHTML += `<option value="${app}">${app}</option>`;
+        });
+        bordeauxData[region][sousRegion].producteurs.forEach(prod => {
+          producteurSelect.innerHTML += `<option value="${prod}">${prod}</option>`;
+        });
+      }
+    });
+
+    function resetAll() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('ocrText').textContent = "Texte OCR apparaîtra ici...";
+      document.getElementById('ocrLines').textContent = "Lignes OCR détectées...";
+      document.getElementById('ficheProduit').textContent = "Fiche produit extraite...";
+      document.getElementById('ficheTable').innerHTML = "";
+      document.getElementById('imageInput').value = "";
+      document.querySelectorAll('.controls input[type="range"]').forEach(input => input.value = input.defaultValue);
+      document.querySelectorAll('.controls select').forEach(select => select.selectedIndex = 0);
+      document.getElementById('producteurLibre').value = "";
+    }
+
+    document.getElementById('reset').addEventListener('click', resetAll);
+
+    document.getElementById('imageInput').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = evt => {
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    img.onload = () => drawImage();
+
+  
+	const controls = ['threshold', 'contrast', 'brightness', 'zoom', 'rotation', 'blur'];
+    controls.forEach(id => {
+      document.getElementById(id).addEventListener('input', drawImage);
+    });
+
+    function drawImage() {
+      const zoom = parseFloat(document.getElementById('zoom').value);
+      const rotation = parseFloat(document.getElementById('rotation').value);
+      const brightness = parseInt(document.getElementById('brightness').value);
+      const contrast = parseInt(document.getElementById('contrast').value);
+      const blur = parseInt(document.getElementById('blur').value);
+
+      canvas.width = 400;
+      canvas.height = 500;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const scaledWidth = img.width * zoom;
+      const scaledHeight = img.height * zoom;
+      const x = (canvas.width - scaledWidth) / 2;
+      const y = (canvas.height - scaledHeight) / 2;
+
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(rotation * Math.PI / 180);
+      ctx.translate(-canvas.width / 2, -canvas.height / 2);
+      ctx.filter = `brightness(${100 + brightness}%) contrast(${100 + contrast}%) blur(${blur}px)`;
+      ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
+      ctx.restore();
+    }
+
+    document.getElementById('runOCR').addEventListener('click', () => {
+      document.getElementById('ocrText').textContent = "⏳ OCR en cours...";
+      Tesseract.recognize(canvas, 'fra', {
+        logger: m => console.log(m)
+      }).then(({ data }) => {
+        const text = data.text.trim();
+        document.getElementById('ocrText').textContent = text;
+        document.getElementById('ocrLines').textContent = data.lines.map(l => l.text).join('\n');
+
+        const fiche = {};
+        const lines = text.split(/\n/);
+
+        lines.forEach(line => {
+          const lower = line.toLowerCase();
+          if (lower.includes("nom") || lower.includes("produit")) fiche.nom = line;
+          else if (lower.includes("réf") || lower.includes("référence")) fiche.reference = line;
+          else if (lower.includes("prix")) fiche.prix = line;
+          else if (lower.includes("description") || lower.includes("desc")) fiche.description = line;
+        });
+
+        // Ajout des sélections manuelles
+        const region = document.getElementById('regionSelect').value;
+        const sousRegion = document.getElementById('sousRegionSelect').value;
+        const appellation = document.getElementById('appellationSelect').value;
+        const cepages = document.getElementById('cepagesSelect').value;
+        const producteurSelect = document.getElementById('producteurSelect').value;
+        const producteurLibre = document.getElementById('producteurLibre').value;
+
+        if (region) fiche.region = "Région : " + region;
+        if (sousRegion) fiche.sousRegion = "Sous-région : " + sousRegion;
+        if (appellation) fiche.appellation = "Appellation : " + appellation;
+        if (cepages) fiche.cepages = "Cépages : " + cepages;
+        if (producteurLibre) fiche.producteur = "Producteur : " + producteurLibre;
+        else if (producteurSelect) fiche.producteur = "Producteur : " + producteurSelect;
+
+        // Affichage brut
+        let output = "📦 Fiche Produit :\n";
+        for (let key in fiche) {
+          output += `• ${key} : ${fiche[key]}\n`;
+        }
+        document.getElementById('ficheProduit').textContent = output;
+
+        // Affichage structuré
+        let table = `<table style="width:100%; border-collapse: collapse;">`;
+        table += `<thead><tr><th style="border:1px solid #ccc; padding:5px;">Champ</th><th style="border:1px solid #ccc; padding:5px;">Valeur</th></tr></thead><tbody>`;
+        for (let key in fiche) {
+          const label = key.replace(/([A-Z])/g, ' $1').toLowerCase();
+          table += `<tr><td style="border:1px solid #ccc; padding:5px;">${label}</td><td style="border:1px solid #ccc; padding:5px;">${fiche[key]}</td></tr>`;
+        }
+        table += `</tbody></table>`;
+        document.getElementById('ficheTable').innerHTML = table;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -16,18 +16,28 @@ export class JarvisElecComponent implements AfterViewInit, OnDestroy {
   private animationId!: number;
 
   ngAfterViewInit() {
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-      this.audioCtx = new AudioContext();
-      const source = this.audioCtx.createMediaStreamSource(stream);
-      this.analyser = this.audioCtx.createAnalyser();
-      this.analyser.fftSize = 256;
-      source.connect(this.analyser);
-      this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-      this.draw();
-    }).catch(err => console.error('Audio error:', err));
+    console.log('********************* ngAfterViewInit jarvis-elec');
+
+      if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && navigator.mediaDevices) {
+        console.log(navigator.mediaDevices);
+
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+          this.audioCtx = new AudioContext();
+          const source = this.audioCtx.createMediaStreamSource(stream);
+          this.analyser = this.audioCtx.createAnalyser();
+          this.analyser.fftSize = 256;
+          source.connect(this.analyser);
+          this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+          this.draw();
+        }).catch(err => console.error('Audio error:', err));
+      } else {
+        console.warn('navigator ou mediaDevices non disponible – environnement non navigateur');
+      }
+ 
   }
 
   draw() {
+   
     const canvas = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d')!;
     const width = canvas.width;
@@ -64,6 +74,7 @@ export class JarvisElecComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('********************* ngOnDestroy jarvis-elec');
     if (this.animationId) cancelAnimationFrame(this.animationId);
     if (this.audioCtx) this.audioCtx.close();
   }

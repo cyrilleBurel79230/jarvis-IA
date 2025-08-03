@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Éditeur d'image simple</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 20px;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+    input[type="range"] {
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <h1>OCR Fiche Produit V2</h1>
+
+  <input type="file" id="imageInput" accept="image/*"><br><br>
+
+  <label>Zoom: <input type="range" id="zoom" min="0.1" max="2" step="0.1" value="1"></label><br>
+  <label>Rotation (°): <input type="range" id="rotation" min="0" max="360" step="1" value="0"></label><br>
+  <label>Grayscale: <input type="range" id="grayscale" min="0" max="100" step="1" value="0"></label><br>
+  <label>Brightness: <input type="range" id="brightness" min="50" max="150" step="1" value="100"></label><br><br>
+
+  <canvas id="canvas" width="400" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+
+    document.getElementById('imageInput').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = evt => {
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    img.onload = () => drawImage();
+
+    const controls = ['zoom', 'rotation', 'grayscale', 'brightness'];
+    controls.forEach(id => {
+      document.getElementById(id).addEventListener('input', drawImage);
+    });
+
+    function drawImage() {
+      const zoom = parseFloat(document.getElementById('zoom').value);
+      const rotation = parseFloat(document.getElementById('rotation').value);
+      const grayscale = document.getElementById('grayscale').value;
+      const brightness = document.getElementById('brightness').value;
+
+      canvas.width = 400;
+      canvas.height = 500;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(rotation * Math.PI / 180);
+      ctx.translate(-canvas.width / 2, -canvas.height / 2);
+      ctx.filter = `grayscale(${grayscale}%) brightness(${brightness}%)`;
+      ctx.drawImage(img, 0, 0, canvas.width * zoom, canvas.height * zoom);
+      ctx.restore();
+    }
+  </script>
+</body>
+</html>

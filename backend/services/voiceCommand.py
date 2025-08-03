@@ -54,7 +54,7 @@ async def ask_mistral(request: Request):
             ],
             temperature=0.7,
             top_p=0.95,
-            max_tokens=1024
+            max_tokens=4000
          )
 
         print(response.choices[0].message.content)

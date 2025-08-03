@@ -33,6 +33,7 @@ isBrowser(): boolean {
         .catch(err => console.error('Erreur caméra :', err));
 
       // Créer worker Tesseract global
+     
       this.worker = Tesseract.createWorker({
         logger: (m: any) => console.log(m)
       });
@@ -48,57 +49,107 @@ isBrowser(): boolean {
       console.error('getUserMedia non supporté');
     }
   }
-  async captureAndAnalyze() {
-        const video = this.videoRef.nativeElement;
-        const canvas = this.canvasRef.nativeElement;
-        const ctx = canvas.getContext('2d')!;
-
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0);
 
 
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-          data[i] = avg;     // R
-          data[i + 1] = avg; // G
-          data[i + 2] = avg; // B
-          // Optionnel : boost contraste
-          // data[i] = avg < 128 ? 0 : 255;
-        }
-        ctx.putImageData(imageData, 0, 0);
+ async captureAndAnalyze() {
+  const video = this.videoRef.nativeElement;
+  const canvas = this.canvasRef.nativeElement;
+  const ctx = canvas.getContext('2d')!;
 
-        const imageDataUrl = canvas.toDataURL('image/png');
+  // 📏 Taille normale (évite le flou dû à l'agrandissement)
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        this.isProcessing = true;
-        this.outputText = 'Analyse en cours...';
+  // 🧪 Image brute sans binarisation
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-        if (typeof Tesseract === 'undefined') {
-          this.outputText = 'Tesseract non chargé';
-          return;
-        }
+  // 🧠 Appliquer un filtre de netteté douce
+  const sharpened = this.applySharpenFilter(imageData);
+  ctx.putImageData(sharpened, 0, 0);
 
-        Tesseract.recognize(imageDataUrl, 'fra', {
-          tessedit_pageseg_mode: Tesseract.PSM.SINGLE_BLOCK,  // ou AUTO
-          logger: (m: any) => console.log(m)
-        })
-          .then((result: any) => {
-            this.outputText = result.data.text;
-            this.isProcessing = false;
-          })
-          .catch((err: any) => {
-            console.error(err);
-            this.outputText = 'Erreur OCR';
-            this.isProcessing = false;
-          });
+  // 📸 Convertir en image base64
+  const imageDataUrl = canvas.toDataURL('image/png');
 
+  this.isProcessing = true;
+  this.outputText = 'Analyse en cours...';
 
+  if (!this.worker) {
+    this.outputText = 'Worker Tesseract non initialisé';
+    this.isProcessing = false;
+    return;
   }
 
- 
+  try {
+    const result = await Tesseract.recognize(
+      imageDataUrl,
+      'fra',
+      {
+        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789éèàçÉÈÀÇ:-,.() ',
+        preserve_interword_spaces: '1',
+        tessedit_pageseg_mode: Tesseract.PSM.AUTO,
+        logger: (m: any) => console.log(m),
+      }
+    );
 
+    this.outputText = result.data.text.trim();
+    console.log('Texte OCR :', this.cleanText(this.outputText));
+
+  } catch (err) {
+    console.error(err);
+    this.outputText = 'Erreur OCR';
+  } finally {
+    this.isProcessing = false;
+  }
+}
+
+
+applySharpenFilter(imageData: ImageData): ImageData {
+  const weights = [
+    0, -1,  0,
+   -1,  5, -1,
+    0, -1,  0
+  ];
+  const side = 3;
+  const halfSide = Math.floor(side / 2);
+
+  const src = imageData.data;
+  const sw = imageData.width;
+  const sh = imageData.height;
+  const output = new ImageData(sw, sh);
+  const dst = output.data;
+
+  for (let y = 0; y < sh; y++) {
+    for (let x = 0; x < sw; x++) {
+      let r = 0, g = 0, b = 0;
+      for (let cy = 0; cy < side; cy++) {
+        for (let cx = 0; cx < side; cx++) {
+          const scy = y + cy - halfSide;
+          const scx = x + cx - halfSide;
+          if (scy >= 0 && scy < sh && scx >= 0 && scx < sw) {
+            const srcOffset = (scy * sw + scx) * 4;
+            const wt = weights[cy * side + cx];
+            r += src[srcOffset] * wt;
+            g += src[srcOffset + 1] * wt;
+            b += src[srcOffset + 2] * wt;
+          }
+        }
+      }
+      const dstOffset = (y * sw + x) * 4;
+      dst[dstOffset] = Math.min(255, Math.max(0, r));
+      dst[dstOffset + 1] = Math.min(255, Math.max(0, g));
+      dst[dstOffset + 2] = Math.min(255, Math.max(0, b));
+      dst[dstOffset + 3] = src[dstOffset + 3]; // alpha
+    }
+  }
+
+  return output;
+}
+
+
+cleanText(text: string): string {
+  return text.replace(/[^a-zA-Z0-9éèàçÉÈÀÇ\s\-.,():]/g, '').trim();
+}
 
 
 
