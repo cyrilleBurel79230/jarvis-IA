@@ -1,0 +1,16 @@
+
+<video id="video" autoplay playsinline></video>
+<canvas id="canvas" style="display:none;"></canvas>
+<button id="capture">📸 Capturer</button>
+
+
+<div class="p-6 bg-gray-900 text-white rounded-lg shadow-md">
+  <input
+    type="file"
+    accept="image/*"
+   
+    class="mb-4 block w-full text-sm text-gray-300 file:bg-accent/30 file:text-white file:rounded-lg file:px-4 file:py-2 file:border-0"
+  />
+  <p *ngIf="isProcessing" class="text-yellow-400">Analyse en cours...</p>
+  <pre *ngIf="text" class="whitespace-pre-wrap mt-4 bg-gray-800 p-4 rounded text-green-300">{{ text }}</pre>
+</div>

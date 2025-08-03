@@ -1,20 +1,291 @@
-<div class="jarvis-cave-map">
-  <h2>🛢️ Plan interactif de la cave</h2>
+<div class="min-h-screen bg-dark text-white font-roboto jarvis-bg">
+    <!-- Interface principale -->
+    <div class="container mx-auto px-4 py-4 max-w-6xl">
+        <!-- Menu mobile -->
+        <div class="md:hidden flex justify-between items-center mb-4">
+            <button id="mobile-menu-button" class="text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <h1 class="text-xl font-orbitron text-primary">JARVIS</h1>
+            <div class="w-8"></div> 
+        </div>
 
-  <div class="zone" *ngFor="let zone of zones" (click)="selectedZone(zone)">
-    <svg viewBox="0 0 100 100">
-      <rect width="100" height="100" rx="12" />
-    </svg>
-    <span>{{ zone.name }}</span>
+       
+      <app-voice-command></app-voice-command> 
+
+ <!-- Ma cave-->
+        <div>
+            <!-- Module Cave à vin -->
+            <div class="glass-effect rounded-xl p-6 hover:border-primary/50 transition-all">
+               
+<!-- Titre et bouton retour -->
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-orbitron text-primary">Gestion de la Cave</h2>
+      <a routerLink="/dashboard" class="inline-flex items-center gap-2 text-primary hover:text-accent transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Retour
+      </a>
+    </div>
+
+    <!-- Statistiques générales -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass-effect p-4 rounded-xl">
+        <h3 class="text-sm text-gray-400">Total bouteilles</h3>
+        <p class="text-2xl font-orbitron text-accent">87</p>
+      </div>
+      <div class="glass-effect p-4 rounded-xl">
+        <h3 class="text-sm text-gray-400">Température</h3>
+        <p class="text-2xl font-orbitron text-accent">12°C</p>
+      </div>
+      <div class="glass-effect p-4 rounded-xl">
+        <h3 class="text-sm text-gray-400">Humidité</h3>
+        <p class="text-2xl font-orbitron text-accent">68%</p>
+      </div>
+      <div class="glass-effect p-4 rounded-xl">
+        <h3 class="text-sm text-gray-400">Rouge / Blanc / Rosé</h3>
+        <p class="text-sm font-orbitron text-primary">42 / 31 / 14</p>
+      </div>
+    </div>
+
+ <!-- Scanner une bouteille -->
+<div class="glass-effect p-6 rounded-xl text-center space-y-6">
+
+  <!-- Titre -->
+  <h3 class="text-lg font-orbitron text-primary">Scanner une bouteille</h3>
+
+  <!-- Scanner centré et agrandi -->
+  <div class="flex justify-center">
+    <div class="w-full max-w-2xl h-[500px]">
+      <app-camera-ocr></app-camera-ocr>
+    </div>
   </div>
 
-  <div class="zone-details" *ngIf="selectedZone">
-    <h3>{{ selectedZone.name }}</h3>
-    <p>{{ selectedZone.description }}</p>
-    <p>Bouteilles : {{ selectedZone.bottles }}</p>
-   <button (click)="speakZone(selectedZone)">
-  🔊 Lecture vocale
-  </button>
-
-  </div>
 </div>
+
+
+
+
+
+
+
+
+<div class="glass-effect p-6 rounded-xl max-w-4xl mx-auto font-roboto text-white space-y-6">
+  <h3 class="text-2xl font-orbitron text-primary text-center">Ajouter une bouteille</h3>
+  <form (ngSubmit)="addBottle()" #bottleForm="ngForm" class="space-y-6">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <input
+        type="text"
+        name="name"
+        [(ngModel)]="newBottle.nom"
+        placeholder="Nom de la bouteille *"
+        required
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="number"
+        name="year"
+        [(ngModel)]="newBottle.annee"
+        placeholder="Année *"
+        min="1900"
+        max="2025"
+        required
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="number"
+        name="price"
+        [(ngModel)]="newBottle.prix"
+        placeholder="Prix unitaire (€)"
+        min="0"
+        step="0.01"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="date"
+        name="addedDate"
+        [(ngModel)]="newBottle.ajoutDate"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="text"
+        name="capacity"
+        [(ngModel)]="newBottle.capacite"
+        placeholder="Capacité (ex: 75cl)"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="number"
+        name="quantity"
+        [(ngModel)]="newBottle.quantite"
+        placeholder="Quantité *"
+        min="1"
+        required
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="number"
+        name="alcohol"
+        [(ngModel)]="newBottle.alcool"
+        placeholder="Degré d'alcool (%)"
+        step="0.1"
+        min="0"
+        max="100"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="text"
+        name="country"
+        [(ngModel)]="newBottle.pays"
+        placeholder="Pays"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="text"
+        name="region"
+        [(ngModel)]="newBottle.region"
+        placeholder="Région"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="text"
+        name="subRegion"
+        [(ngModel)]="newBottle.sousRegion"
+        placeholder="Sous-région"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="text"
+        name="appellation"
+        [(ngModel)]="newBottle.appellation"
+        placeholder="Appellation"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="text"
+        name="location"
+        [(ngModel)]="newBottle.emplacement"
+        placeholder="Emplacement dans la cave"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="text"
+        name="garde"
+        [(ngModel)]="newBottle.garde"
+        placeholder="Durée de garde"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+
+      <input
+        type="text"
+        name="grapes"
+        [(ngModel)]="newBottle.cepages"
+        placeholder="Cépages (séparés par virgule)"
+        class="bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent transition"
+      />
+    </div>
+
+    <textarea
+      name="pairing"
+      [(ngModel)]="newBottle.accords"
+      placeholder="Accords mets et vins"
+      rows="3"
+      class="w-full bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-accent transition"
+    ></textarea>
+
+    <textarea
+      name="giftFrom"
+      [(ngModel)]="newBottle.offert"
+      placeholder="Qui me l'a offert ?"
+      rows="2"
+      class="w-full bg-gray-900 text-white font-orbitron rounded-md px-4 py-3 placeholder-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-accent transition"
+    ></textarea>
+
+    <!-- Note 5 étoiles -->
+    <div class="flex items-center space-x-3 pt-2">
+      <span class="text-gray-400 font-orbitron text-sm">Score :</span>
+      <ng-container *ngFor="let star of [1,2,3,4,5]">
+        <button
+          type="button"
+          (click)="setRating(star)"
+          [class.text-yellow-400]="star <= newBottle.score"
+          class="text-gray-600 hover:text-yellow-400 transition text-3xl focus:outline-none"
+          
+        >
+          ★
+        </button>
+      </ng-container>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="bottleForm.invalid"
+      class="w-full bg-accent/20 hover:bg-accent/40 text-accent font-orbitron py-4 rounded-lg text-lg transition disabled:opacity-50"
+    >
+      Ajouter la bouteille
+    </button>
+  </form>
+</div>
+
+
+
+
+ 
+
+    <!-- Emplacement des bouteilles -->
+    <div class="glass-effect p-6 rounded-xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-orbitron text-primary">Carte des emplacements</h3>
+        <button class="text-xs bg-primary/10 text-primary px-3 py-1 rounded hover:bg-primary/20 transition">
+          Modifier
+        </button>
+      </div>
+      <div class="grid grid-cols-6 gap-2">
+        <div *ngFor="let slot of slots" class="w-full aspect-square rounded-md bg-gray-800 flex items-center justify-center text-sm text-white font-orbitron hover:bg-primary/30 transition-all">
+          A{{slot}}
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+            </div>
+
+        </div>
+
+      <!-- Effet JARVIS flottant -->
+    <div class="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 animate-float">
+        <div class="w-12 h-12 rounded-full bg-primary/40 animate-pulse-slow"></div>
+    </div>
+</div>
+
+
+        
+ 
+
+</div>
+ 
+
+
+
+  

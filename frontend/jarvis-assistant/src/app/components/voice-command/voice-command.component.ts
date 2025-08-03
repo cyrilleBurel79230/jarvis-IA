@@ -4,6 +4,7 @@ import { VoiceService } from './service/voice.service';
 import { PlatformService } from '../../core/services/platform.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { JarvisElecComponent } from "../jarvis-elec/jarvis-elec.component";
 
 
 declare interface SpeechRecognitionErrorEvent extends Event {
@@ -15,7 +16,7 @@ declare interface SpeechRecognitionErrorEvent extends Event {
 @Component({
   selector: 'app-voice-command',
   standalone: true,
-  imports: [SHARED_IMPORTS],
+  imports: [SHARED_IMPORTS, JarvisElecComponent],
   templateUrl: './voice-command.component.html',
   styleUrl: './voice-command.component.css'
 })

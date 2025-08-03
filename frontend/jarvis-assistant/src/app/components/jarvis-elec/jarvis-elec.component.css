@@ -1,0 +1,8 @@
+/* Exemple d'ombre néon custom */
+.shadow-neon {
+  box-shadow:
+    0 0 8px #00fff7,
+    0 0 20px #00fff7,
+    0 0 30px #00fff7,
+    0 0 40px #00fff7;
+}

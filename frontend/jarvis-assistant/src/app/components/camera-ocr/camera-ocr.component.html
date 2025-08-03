@@ -1,0 +1,36 @@
+<div class="flex flex-col items-center justify-center min-h-[70vh] space-y-6">
+
+  <!-- Zone vidéo/scanner -->
+  <div class="w-full max-w-md h-80 bg-black/50 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/30 relative shadow-lg p-4">
+    <div class="text-center w-full">
+      <video #video autoplay playsinline class="w-full h-full object-cover rounded-md"></video>
+      <canvas #canvas class="hidden"></canvas>
+      <p class="text-sm text-gray-300 mt-2">Placez l'étiquette de la bouteille dans le cadre</p>
+    </div>
+  </div>
+
+  <!-- Bouton de capture -->
+  <button 
+    (click)="captureAndAnalyze()" 
+    [disabled]="isProcessing"
+    class="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-2 rounded-lg font-orbitron transition-all shadow-md"
+  >
+    {{ isProcessing ? 'Analyse en cours...' : '📸 Capturer & OCR' }}
+  </button>
+
+  <!-- Résultat OCR -->
+  <div *ngIf="outputText" class="mt-4 p-4 bg-gray-800 text-white rounded max-w-md w-full shadow-md">
+    <h2 class="font-bold mb-2">Texte détecté :</h2>
+    <pre class="whitespace-pre-wrap">{{ outputText }}</pre>
+  </div>
+
+  <!-- Bouton Ajouter (à activer dynamiquement plus tard) -->
+  <button 
+    id="add-to-cellar" 
+    class="bg-accent/20 hover:bg-accent/30 text-accent px-6 py-2 rounded-lg font-orbitron transition-all shadow-md"
+    *ngIf="outputText"
+  >
+    Ajouter à ma cave
+  </button>
+
+</div>
