@@ -11,6 +11,12 @@ pip install rasa==3.6.21 pydantic==1.10.9
 python -m venv mistral-env
 .\mistral-env\Scripts\activate
 
+
+Pour lancer angular en mode ssl pour utiliser sur téléphone:
+npm run start:ssl
+
+
+
 python -m pip install mistralai==1.9.2
 python -m pip install pydantic==2.11.7
 
@@ -65,3 +71,6 @@ Lancer Docker desktop du pc puis lancer la comande docker build -t jarvis-ia .
 pour lancer un mock 
  C:\Users\cyril\OneDrive\Documents\Projet_assistants_IA\jarvis-IA\frontend\jarvis-assistant\src\app\mock> node cave-server.js
 Cave backend actif sur http://localhost:3000/api/cave
+
+Pour GIT BASH:
+cd C:/Users/cyril/OneDrive/Documents/Projet_assistants_IA/jarvis-IA

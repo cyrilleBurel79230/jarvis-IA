@@ -141,8 +141,8 @@
         });
       }
 
-      document.getElementById('appellationSelect').innerHTML = '<option value="">-- S�lectionner --</option>';
-      document.getElementById('producteurSelect').innerHTML = '<option value="">-- S�lectionner --</option>';
+      document.getElementById('appellationSelect').innerHTML = '<option value="">-- Sélectionner --</option>';
+      document.getElementById('producteurSelect').innerHTML = '<option value="">-- Sélectionner --</option>';
     });
 
     document.getElementById('sousRegionSelect').addEventListener('change', () => {
@@ -167,7 +167,7 @@
     function resetAll() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       document.getElementById('ocrText').textContent = "Texte OCR apparaitra ici...";
-      document.getElementById('ocrLines').textContent = "Lignes OCR d�tect�es...";
+      document.getElementById('ocrLines').textContent = "Lignes OCR détectées...";
       document.getElementById('ficheProduit').textContent = "Fiche produit extraite...";
       document.getElementById('ficheTable').innerHTML = "";
       document.getElementById('imageInput').value = "";

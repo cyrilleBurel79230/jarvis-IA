@@ -6,6 +6,8 @@ import { ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { JarvisElecComponent } from "../jarvis-elec/jarvis-elec.component";
 import { Router } from '@angular/router';
+import chalk from 'chalk';
+
 
 
 declare interface SpeechRecognitionErrorEvent extends Event {
@@ -109,16 +111,20 @@ console.log('********************* ngOnInit voice-command');
    console.log('********************* handleCommand voice-command');
     // 🚀 Commandes personnalisées
     if (command.includes('bonjour')) {
+      console.log(chalk.green('Bonjour'));
       this.voiceService.speakForModule('Bonjour Monsieur ! Comment puis-je vous aider ?', 'ui', 'jarvis');
       
     }else if (command.includes('ajouter') && command.includes('bouteille')) {
+      console.log(chalk.green('Ajouter une bouteille'));
       this.router.navigate(['/cave']); // remplace '/scanner' par le chemin réel de ton composant
     } else if (command.includes('retirer') && command.includes('bouteille')) {
+       console.log(chalk.green('Retirer une bouteille'));
       this.router.navigate(['/cave']); // remplace '/scanner' par le chemin réel de ton composant
     } else if (command.includes('active l’alarme')) {
       this.activateAlarm();
     
     } else if (command.includes('stop')){
+       console.log(chalk.green('Stop'));
         this.voiceService.stopSpeaking();
     
     } else {
@@ -142,7 +148,7 @@ console.log('********************* ngOnInit voice-command');
 */
           this.jarvisReply=describedText;
           this.onVoiceResponse(describedText); // 🖥️ affichage en parallèle
-          console.log('Réponse de Jarvis:', describedText);
+          console.log(chalk.red('Réponse de Jarvis:', describedText));
         },
         error: err => console.error('Erreur Backend:',err)
       })

@@ -71,6 +71,14 @@
             },
             "development": {
               "buildTarget": "jarvis-assistant:build:development"
+            },
+            "ssl-local": {
+              "buildTarget": "jarvis-assistant:build:development",
+              "host": "192.168.1.223",
+              "port": 4200,
+              "ssl": true,
+              "sslKey": "ssl/key.pem",
+              "sslCert": "ssl/cert.pem"
             }
           },
           "defaultConfiguration": "development"
